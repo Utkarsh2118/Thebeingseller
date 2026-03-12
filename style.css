@@ -1730,8 +1730,8 @@ body.light-theme .page-aura {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(28px);
+  opacity: 1;
+  transform: none;
   transition: opacity 0.65s ease, transform 0.65s ease;
 }
 
