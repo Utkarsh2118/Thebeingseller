@@ -1,6 +1,6 @@
 const siteConfig = {
   developmentApiBaseUrl: 'http://localhost:5000',
-  productionApiBaseUrl: 'https://your-render-service.onrender.com',
+  productionApiBaseUrl: 'https://thebeingseller-api.onrender.com',
 };
 
 const newsItems = [
@@ -643,7 +643,7 @@ const economicCalendarEvents = [
     date: 'Apr 12',
     day: 'Saturday',
     event: 'India Inflation Data (CPI)',
-    description: 'Consumer Price Index — key indicator for RBI rate path expectations.',
+    description: 'Consumer Price Index ï¿½ key indicator for RBI rate path expectations.',
     category: 'Macro Data',
     impact: 'high',
   },
@@ -659,7 +659,7 @@ const economicCalendarEvents = [
     date: 'Apr 22',
     day: 'Tuesday',
     event: 'Q4 Corporate Earnings Season',
-    description: 'Major index-heavy stocks begin reporting quarterly results — index mover.',
+    description: 'Major index-heavy stocks begin reporting quarterly results ï¿½ index mover.',
     category: 'Earnings',
     impact: 'high',
   },
@@ -667,7 +667,7 @@ const economicCalendarEvents = [
     date: 'Apr 29',
     day: 'Tuesday',
     event: 'US Federal Reserve Meeting',
-    description: 'Fed rate decision and forward guidance — global risk sentiment impact.',
+    description: 'Fed rate decision and forward guidance ï¿½ global risk sentiment impact.',
     category: 'Global',
     impact: 'high',
   },
