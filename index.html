@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Professional trading business website for market analysis, portfolio consultation, and trading setup guidance."
+  />
+  <meta name="keywords" content="Nifty trader, BankNifty trading, options seller, market analysis, trading consultation, risk management" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Thebeingseller | Professional Trading Solutions" />
+  <meta property="og:description" content="Professional trading guidance focused on disciplined execution, research-based analysis, and risk-managed market participation." />
+  <meta property="og:type" content="website" />
+  <title>Professional Trading Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-aura page-aura-left" aria-hidden="true"></div>
+  <div class="page-aura page-aura-right" aria-hidden="true"></div>
+
+  <header class="site-header" id="home">
+    <nav class="navbar container">
+      <a class="brand" href="#home" aria-label="Professional Trading Solutions home">
+        <span class="brand-mark">TS</span>
+        <span class="brand-text">
+          <strong>Thebeingseller</strong>
+          <small>Professional, Reliable, and Trustworthy</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-menu">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#strategies">Strategies</a>
+        <a href="#market">Market</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <i class="bi bi-moon-stars"></i>
+        </button>
+       <a href="#contact" class="btn btn-primary">Contact Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section">
+      <div class="container">
+        <div class="market-session-strip reveal" id="marketSessionStrip" aria-live="polite">
+          <div class="session-main">
+            <span class="session-dot" id="sessionDot" aria-hidden="true"></span>
+            <strong id="sessionLabel">Checking market session...</strong>
+          </div>
+          <div class="session-meta">
+            <span id="sessionNote">Aligning with India market timings</span>
+            <span id="sessionClock">IST --:--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="container hero-layout">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Index and Derivatives Specialist</p>
+          <h1>Professional  Reliable  Trustworthy</h1>
+          <p class="hero-subtitle">
+           Helping traders navigate Nifty and BankNifty with structured strategies and disciplined risk management.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Contact Now</a>
+            <a class="btn btn-secondary" href="#services">Explore Services</a>
+          </div>
+          <div class="hero-trust">
+            <span><i class="bi bi-bar-chart-line"></i> Live market perspective</span>
+            <span><i class="bi bi-shield-check"></i> Risk-first planning</span>
+            <span><i class="bi bi-people"></i> Client-focused guidance</span>
+          </div>
+        </div>
+
+        <aside class="hero-panel reveal" aria-label="Trading performance overview">
+          <div class="panel-top">
+            <div>
+              <p class="panel-label">Market Snapshot</p>
+              <h2>Focused on high-probability setups</h2>
+            </div>
+            <span class="status-chip">Live</span>
+          </div>
+
+          <div class="mini-metrics">
+            <article>
+              <span>Nifty Bias</span>
+              <strong>Bullish</strong>
+              <small>Trend above key support</small>
+            </article>
+            <article>
+              <span>BankNifty</span>
+              <strong>Momentum</strong>
+              <small>Leadership watchlist</small>
+            </article>
+            <article>
+              <span>Options</span>
+              <strong>Volatility Edge</strong>
+              <small>Structured hedge awareness</small>
+            </article>
+          </div>
+
+          <div class="bull-bear-visual" aria-label="Bull and Bear market sentiment animation">
+            <div class="bb-title-row">
+              <p class="panel-label">Sentiment Motion</p>
+              <span class="bb-chip" id="bbMoodChip">Bull vs Bear</span>
+            </div>
+
+            <div class="bb-stage" aria-hidden="true">
+              <div class="bb-candles">
+                <span class="candle-1"></span>
+                <span class="candle-2"></span>
+                <span class="candle-3"></span>
+                <span class="candle-4"></span>
+                <span class="candle-5"></span>
+              </div>
+              <div class="bb-trend-arrow"></div>
+
+              <div class="bb-token bb-bull">
+                <svg viewBox="0 0 64 64" role="img" aria-label="Bull icon">
+                  <circle cx="32" cy="35" r="17"></circle>
+                  <polygon points="20,26 10,14 22,16"></polygon>
+                  <polygon points="44,26 54,14 42,16"></polygon>
+                  <circle cx="26" cy="35" r="2.5"></circle>
+                  <circle cx="38" cy="35" r="2.5"></circle>
+                </svg>
+                <small>Bullish</small>
+              </div>
+
+              <div class="bb-token bb-bear">
+                <svg viewBox="0 0 64 64" role="img" aria-label="Bear icon">
+                  <circle cx="22" cy="20" r="7"></circle>
+                  <circle cx="42" cy="20" r="7"></circle>
+                  <circle cx="32" cy="35" r="18"></circle>
+                  <circle cx="26" cy="35" r="2.5"></circle>
+                  <circle cx="38" cy="35" r="2.5"></circle>
+                </svg>
+                <small>Bearish</small>
+              </div>
+            </div>
+
+            <div class="bb-sentiment-ticker" aria-label="Live bullish and bearish sentiment snapshot">
+              <article class="bb-ticker-card bb-ticker-bull">
+                <span class="bb-ticker-label">Bullish Pressure</span>
+                <strong id="bbBullPressure">+1.82%</strong>
+              </article>
+              <article class="bb-ticker-card bb-ticker-bear">
+                <span class="bb-ticker-label">Bearish Pressure</span>
+                <strong id="bbBearPressure">-0.96%</strong>
+              </article>
+            </div>
+          </div>
+
+          <div class="signal-card">
+            <div>
+              <p class="panel-label">Approach</p>
+              <h3>Read the tape. Respect risk. Execute with intent.</h3>
+            </div>
+            <ul>
+              <li>Technical structure and momentum alignment</li>
+              <li>Clear entry, exit, and invalidation planning</li>
+              <li>Consultation tailored to client objectives</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="ticker-section reveal">
+      <div class="container">
+        <div class="tradingview-widget-container ticker-shell">
+          <div class="tradingview-widget-container__widget" id="marketTickerTape"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container about-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">About the Trader</p>
+          <h2>Professional trading built on discipline, process, and accountable execution.</h2>
+        </div>
+
+        <article class="about-profile-card reveal" aria-label="About the trader profile">
+          <div class="about-profile-media">
+            <img
+              src="ashu2.jpeg"
+              alt="Professional portrait of the trader"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div class="about-profile-content">
+            <span class="panel-label">Trader Profile</span>
+            <h3>Ashutosh Srivastava</h3>
+            <p class="profile-title">Professional Trader | Option Seller</p>
+
+            <div class="profile-meta">
+              <div>
+                <span>Experience</span>
+                <strong>7+ Years in Active Trading</strong>
+              </div>
+              <div>
+                <span>Markets Traded</span>
+                <strong>Nifty, BankNifty, Options, Equity</strong>
+              </div>
+            </div>
+
+            <p>
+              Ashutosh follows a disciplined, research-led trading framework focused on market structure,
+              price behavior, and macro context. Every setup is filtered through defined risk rules,
+              position sizing discipline, and scenario planning to protect capital while pursuing
+              repeatable outcomes.
+            </p>
+            <p>
+              His core objective is long-term consistency over short-term excitement, helping traders
+              build responsible habits through process, patience, and data-backed decision-making.
+            </p>
+
+            <blockquote class="profile-quote">
+              "Responsible trading is not about predicting every move; it is about respecting risk and
+              staying consistent with your plan."
+            </blockquote>
+
+            <div class="profile-highlights">
+              <article>
+                <span>Years of Experience</span>
+                <strong>7+ Years</strong>
+              </article>
+              <article>
+                <span>Markets Specialized In</span>
+                <strong>Nifty, BankNifty, Options, Equity</strong>
+              </article>
+              <article>
+                <span>Trading Philosophy</span>
+                <strong>Discipline, risk control, and long-term consistency</strong>
+              </article>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section team-section" id="team">
+      <div class="container team-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Our Expert Trading Team</p>
+          <h2>Meet Our Trading Team</h2>
+          <p>
+            A focused trading desk built around derivatives strategy, chart-based decision-making,
+            and disciplined market execution across Nifty and BankNifty.
+          </p>
+        </div>
+
+        <div class="team-grid">
+          <article class="team-card reveal" aria-label="Main Trader profile">
+            <div class="team-card-media">
+              <img
+                src="ashu2.jpeg"
+                alt="Professional portrait of the main trader"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="team-specialization-badge">
+                <i class="bi bi-graph-up-arrow"></i>
+                Option Seller
+              </span>
+            </div>
+
+            <div class="team-card-content">
+              <div class="team-card-header">
+                <div>
+                  <h3>Ashutosh Srivastava</h3>
+                  <p class="team-role">Professional Trader &amp; Option Seller</p>
+                </div>
+                <span class="team-icon-chip" aria-hidden="true">
+                  <i class="bi bi-bar-chart-line-fill"></i>
+                </span>
+              </div>
+
+              <div class="team-meta">
+                <span><i class="bi bi-clock-history"></i> 7+ Years Experience</span>
+                <span><i class="bi bi-bullseye"></i> Nifty &amp; BankNifty Derivatives</span>
+              </div>
+
+              <p>
+                Leads the desk with a disciplined derivatives approach focused on structured market
+                analysis, defined risk parameters, and repeatable execution across Nifty and
+                BankNifty opportunities.
+              </p>
+            </div>
+          </article>
+
+          <article class="team-card reveal" aria-label="Aditya Kashyap profile">
+            <div class="team-card-media">
+              <img
+                src="mission.jpeg"
+                alt="Professional portrait of Aditya Kashyap"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="team-specialization-badge">
+                <i class="bi bi-bezier2"></i>
+                Chart Patterns
+              </span>
+            </div>
+
+            <div class="team-card-content">
+              <div class="team-card-header">
+                <div>
+                  <h3>Aditya Kashyap</h3>
+                  <p class="team-role">Chart Pattern Analyst</p>
+                </div>
+                <span class="team-icon-chip" aria-hidden="true">
+                  <i class="bi bi-activity"></i>
+                </span>
+              </div>
+
+              <div class="team-meta">
+                <span><i class="bi bi-clock-history"></i> 4+ Years Experience</span>
+                <span><i class="bi bi-bar-chart-steps"></i> Price Action Trading</span>
+              </div>
+
+              <p>
+                Specializes in chart pattern recognition and price action analysis, helping refine
+                entries and exits through clean structure reading, confirmation levels, and
+                disciplined setup selection.
+              </p>
+            </div>
+          </article>
+
+          <article class="team-card reveal" aria-label="Devansh Srivastava profile">
+            <div class="team-card-media">
+              <img
+                src="beeru.jpeg"
+                alt="Professional portrait of Devansh Srivastava"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="team-specialization-badge">
+                <i class="bi bi-diagram-3"></i>
+                Options Chain
+              </span>
+            </div>
+
+            <div class="team-card-content">
+              <div class="team-card-header">
+                <div>
+                  <h3>Devansh Srivastava</h3>
+                  <p class="team-role">Options Chain Analyst</p>
+                </div>
+                <span class="team-icon-chip" aria-hidden="true">
+                  <i class="bi bi-grid-1x2-fill"></i>
+                </span>
+              </div>
+
+              <div class="team-meta">
+                <span><i class="bi bi-clock-history"></i> 3+ Years Experience</span>
+                <span><i class="bi bi-lightning-charge"></i> Nifty &amp; BankNifty Scalping</span>
+               
+              </div>
+
+              <p>
+                Focuses on options chain interpretation and short-duration index opportunities,
+                supporting the desk with fast reads on positioning, intraday scalping conditions,
+                and evolving derivatives sentiment.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Services</p>
+          <h2>Professional support designed around real trading needs.</h2>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <i class="bi bi-graph-up-arrow"></i>
+            <h3>Market Analysis</h3>
+            <p>
+              Structured market breakdowns with levels, trend context, momentum confirmation, and scenario-based planning.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <i class="bi bi-pie-chart"></i>
+            <h3>Portfolio Consultation</h3>
+            <p>
+              Guidance for aligning portfolio decisions with market conditions, risk tolerance, and capital objectives.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <i class="bi bi-sliders2"></i>
+            <h3>Trading Setup Guidance</h3>
+            <p>
+              Actionable help on trade structure, entries, exits, risk control, and the discipline required for consistency.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="strategies">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Trading Strategies</p>
+          <h2>Structured approaches built for consistency and capital discipline.</h2>
+        </div>
+        <div class="strategy-grid">
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-lightning-charge"></i>
+            </div>
+            <h3>Breakout Trading</h3>
+            <p>Entering when price decisively breaks above or below a key structure level, confirmed by volume and momentum, with defined risk placement and scenario planning.</p>
+            <ul class="strategy-points">
+              <li>Volume and momentum confirmation</li>
+              <li>Clear invalidation level as stop</li>
+              <li>Defined reward-to-risk before entry</li>
+            </ul>
+          </article>
+
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-shield-half"></i>
+            </div>
+            <h3>Options Hedging</h3>
+            <p>Building protective structures using options to limit downside exposure while maintaining market participation on favorable moves.</p>
+            <ul class="strategy-points">
+              <li>Spreads to reduce net premium cost</li>
+              <li>Hedge sizing aligned to portfolio risk</li>
+              <li>Event-driven hedge activation</li>
+            </ul>
+          </article>
+
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-sliders2-vertical"></i>
+            </div>
+            <h3>Risk Management</h3>
+            <p>Structuring every trade with pre-defined capital allocation, stop-loss levels, and scenario planning to protect capital against adverse moves.</p>
+            <ul class="strategy-points">
+              <li>Maximum position size per trade</li>
+              <li>Account-level drawdown limits</li>
+              <li>Scenario-based exit planning</li>
+            </ul>
+          </article>
+
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h3>Technical Analysis</h3>
+            <p>Reading price structure, candlestick patterns, support and resistance zones, and momentum indicators for high-probability trade decisions.</p>
+            <ul class="strategy-points">
+              <li>Multi-timeframe confluence</li>
+              <li>Support and resistance mapping</li>
+              <li>Momentum and trend alignment</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section achievements-section" id="achievements">
+      <div class="container achievements-shell reveal">
+        <div class="section-heading compact">
+          <p class="eyebrow">Achievements</p>
+          <h2>Numbers that communicate experience and trust.</h2>
+        </div>
+
+        <div class="achievements-grid">
+          <article class="achievement-card">
+            <i class="bi bi-award"></i>
+            <strong class="counter" data-target="7" data-suffix="+">0</strong>
+            <span>Years of experience</span>
+            <small>Structured market participation across index and derivatives trading.</small>
+            <div class="achievement-rail" aria-hidden="true"><span class="achievement-fill achievement-fill-1"></span></div>
+          </article>
+          <article class="achievement-card">
+            <i class="bi bi-bar-chart-steps"></i>
+            <strong class="counter" data-target="4200" data-suffix="+">0</strong>
+            <span>Trades executed</span>
+            <small>Experience built through repeatable execution, review, and risk control.</small>
+            <div class="achievement-rail" aria-hidden="true"><span class="achievement-fill achievement-fill-2"></span></div>
+          </article>
+          <article class="achievement-card">
+            <i class="bi bi-people"></i>
+            <strong class="counter" data-target="50" data-suffix="+">0</strong>
+            <span>Clients served</span>
+            <small>Guidance focused on clarity, discipline, and responsible market engagement.</small>
+            <div class="achievement-rail" aria-hidden="true"><span class="achievement-fill achievement-fill-3"></span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section performance-section" id="performance">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Performance Insights</p>
+          <h2>Transparent process metrics built on discipline and consistency.</h2>
+        </div>
+        <div class="performance-grid">
+
+          <article class="performance-card reveal">
+            <div class="performance-card-header">
+              <div>
+                <span class="panel-label">Monthly Analysis</span>
+                <h3>Process Review</h3>
+              </div>
+              <i class="bi bi-bar-chart-line performance-card-icon"></i>
+            </div>
+            <div class="perf-monthly-items">
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Structured Trade Reviews</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-1" data-anim-width="82"></div></div>
+                  <span class="perf-bar-value">82%</span>
+                </div>
+              </div>
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Plan Adherence Rate</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-2" data-anim-width="76"></div></div>
+                  <span class="perf-bar-value">76%</span>
+                </div>
+              </div>
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Pre-Trade Analysis Rate</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-3" data-anim-width="91"></div></div>
+                  <span class="perf-bar-value">91%</span>
+                </div>
+              </div>
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Risk Rules Respected</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-4" data-anim-width="88"></div></div>
+                  <span class="perf-bar-value">88%</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="performance-card reveal">
+            <div class="performance-card-header">
+              <div>
+                <span class="panel-label">Trading Discipline</span>
+                <h3>Behavioral Metrics</h3>
+              </div>
+              <i class="bi bi-shield-check performance-card-icon"></i>
+            </div>
+            <div class="discipline-metrics">
+              <div class="discipline-metric">
+                <div class="discipline-metric-icon"><i class="bi bi-check-circle"></i></div>
+                <div>
+                  <strong>Stop-Loss Discipline</strong>
+                  <p>Consistent application of pre-defined stop levels on every trade, regardless of conviction level.</p>
+                </div>
+              </div>
+              <div class="discipline-metric">
+                <div class="discipline-metric-icon"><i class="bi bi-layers"></i></div>
+                <div>
+                  <strong>Position Sizing Control</strong>
+                  <p>Capital allocation based on setup quality and market volatility, not emotional impulse.</p>
+                </div>
+              </div>
+              <div class="discipline-metric">
+                <div class="discipline-metric-icon"><i class="bi bi-journal-check"></i></div>
+                <div>
+                  <strong>Trade Journaling</strong>
+                  <p>Every significant trade reviewed and documented for patterns and consistent improvement areas.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="performance-card reveal">
+            <div class="performance-card-header">
+              <div>
+                <span class="panel-label">Strategy Effectiveness</span>
+                <h3>Process Indicators</h3>
+              </div>
+              <i class="bi bi-pie-chart performance-card-icon"></i>
+            </div>
+            <div class="strategy-effectiveness">
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-1"></span>
+                  <span>Breakout Setups</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-1" data-anim-width="68"></div></div>
+                  <span class="perf-bar-value">68%</span>
+                </div>
+              </div>
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-2"></span>
+                  <span>Options Structures</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-2" data-anim-width="74"></div></div>
+                  <span class="perf-bar-value">74%</span>
+                </div>
+              </div>
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-3"></span>
+                  <span>Trend Following</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-3" data-anim-width="61"></div></div>
+                  <span class="perf-bar-value">61%</span>
+                </div>
+              </div>
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-4"></span>
+                  <span>Hedged Positions</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-4" data-anim-width="79"></div></div>
+                  <span class="perf-bar-value">79%</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+        <p class="perf-disclaimer reveal">
+          <i class="bi bi-info-circle"></i> These metrics reflect process discipline and behavioral consistency, not financial return guarantees. Past patterns do not guarantee future results. All trading carries inherent risk of capital loss.
+        </p>
+      </div>
+    </section>
+
+    <section class="section trust-section" id="testimonials">
+      <div class="container trust-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Trust & Perspective</p>
+          <h2>Built for serious traders who value process, transparency, and responsible market participation.</h2>
+        </div>
+
+        <div class="trust-grid">
+          <article class="trust-proof-card reveal">
+            <span class="trust-badge">Client Perspective</span>
+            <p>
+              “The guidance is practical and calm. The focus stays on setups, risk, and execution discipline rather than noise.”
+            </p>
+            <strong>Active Index Trader</strong>
+          </article>
+
+          <article class="trust-proof-card reveal">
+            <span class="trust-badge">Client Perspective</span>
+            <p>
+              “What stands out is the emphasis on capital protection and clarity. Every discussion starts with risk before opportunity.”
+            </p>
+            <strong>Options Participant</strong>
+          </article>
+
+          <article class="trust-proof-card reveal">
+            <span class="trust-badge">Client Perspective</span>
+            <p>
+              “The approach feels professional and data-backed. It helps filter impulsive decisions and keeps the process consistent.”
+            </p>
+            <strong>Independent Market Learner</strong>
+          </article>
+        </div>
+
+        <div class="trust-points reveal">
+          <span><i class="bi bi-patch-check"></i> Research-led market analysis</span>
+          <span><i class="bi bi-shield-check"></i> Risk-first trading framework</span>
+          <span><i class="bi bi-bar-chart-line"></i> Long-term consistency over hype</span>
+        </div>
+
+        <p class="trust-disclaimer reveal">
+          Trading involves market risk. The focus here is on disciplined decision-making, responsible execution, and informed market participation rather than unrealistic claims.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="market">
+      <div class="container market-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Market Desk</p>
+          <h2>Track the market backdrop before making your next decision.</h2>
+        </div>
+
+        <div class="market-grid">
+          <article class="market-card chart-card reveal">
+            <div class="card-header">
+              <div>
+                <span class="panel-label">Advanced Chart</span>
+                <h3>Nifty-focused TradingView workspace</h3>
+              </div>
+              <span class="dot-indicator">Live</span>
+            </div>
+            <div id="tradingview-chart" class="chart-container"></div>
+          </article>
+
+          <div class="market-side">
+            <article class="market-card reveal">
+              <div class="card-header">
+                <div>
+                  <span class="panel-label">Key Focus</span>
+                  <h3>Live ticker watchlist</h3>
+                </div>
+              </div>
+              <div class="ticker-list">
+                <div>
+                  <span>Nifty</span>
+                  <strong>Trend and breadth tracking</strong>
+                </div>
+                <div>
+                  <span>Sensex</span>
+                  <strong>Large-cap sentiment pulse</strong>
+                </div>
+                <div>
+                  <span>BankNifty</span>
+                  <strong>Sector leadership signal</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="market-card news-card reveal">
+              <div class="card-header">
+                <div>
+                  <span class="panel-label">Market News</span>
+                  <h3>Financial headlines</h3>
+                </div>
+              </div>
+              <div class="news-feature" id="newsFeature">
+                <span class="news-tag" id="newsFeatureTag">Headline</span>
+                <h4 id="newsFeatureTitle">Loading market highlights...</h4>
+                <p id="newsFeatureSummary">Curated finance headlines rotate here for quick context.</p>
+              </div>
+              <div class="news-list" id="newsList"></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sentiment">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Market Sentiment</p>
+          <h2>Current market bias across key Indian indices.</h2>
+        </div>
+
+        <div class="sentiment-grid">
+
+          <article class="sentiment-card is-bull reveal">
+            <div class="sentiment-card-top">
+              <span class="panel-label">Nifty 50</span>
+              <span class="sentiment-pill sentiment-pill-bull">
+                <i class="bi bi-graph-up-arrow"></i> Bullish
+              </span>
+            </div>
+            <div class="sentiment-body">
+              <div class="sentiment-body-icon sentiment-body-icon-bull" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <circle cx="32" cy="35" r="17"></circle>
+                  <polygon points="20,26 10,14 22,16"></polygon>
+                  <polygon points="44,26 54,14 42,16"></polygon>
+                  <circle cx="26" cy="35" r="2.5" class="senti-eye"></circle>
+                  <circle cx="38" cy="35" r="2.5" class="senti-eye"></circle>
+                </svg>
+              </div>
+              <div>
+                <strong class="sentiment-mood-label">Bullish</strong>
+                <span class="sentiment-trend-note">Trend above key support</span>
+              </div>
+            </div>
+            <div class="sentiment-scale">
+              <div class="sentiment-scale-track">
+                <div class="sentiment-scale-fill sentiment-scale-fill-bull" data-anim-width="72"></div>
+              </div>
+              <div class="sentiment-scale-ends">
+                <span>Bearish</span>
+                <span>Neutral</span>
+                <span>Bullish</span>
+              </div>
+            </div>
+            <p class="sentiment-card-desc">Nifty is maintaining its position above key moving averages with broad market participation and institutional support.</p>
+          </article>
+
+          <article class="sentiment-card is-neutral reveal">
+            <div class="sentiment-card-top">
+              <span class="panel-label">BankNifty</span>
+              <span class="sentiment-pill sentiment-pill-neutral">
+                <i class="bi bi-dash-circle"></i> Neutral
+              </span>
+            </div>
+            <div class="sentiment-body">
+              <div class="sentiment-body-icon sentiment-body-icon-neutral" aria-hidden="true">
+                <i class="bi bi-dash-circle sentiment-neutral-icon"></i>
+              </div>
+              <div>
+                <strong class="sentiment-mood-label">Neutral</strong>
+                <span class="sentiment-trend-note">Consolidating near resistance</span>
+              </div>
+            </div>
+            <div class="sentiment-scale">
+              <div class="sentiment-scale-track">
+                <div class="sentiment-scale-fill sentiment-scale-fill-neutral" data-anim-width="50"></div>
+              </div>
+              <div class="sentiment-scale-ends">
+                <span>Bearish</span>
+                <span>Neutral</span>
+                <span>Bullish</span>
+              </div>
+            </div>
+            <p class="sentiment-card-desc">BankNifty is in a consolidation phase near overhead resistance. Watching for a decisive breakout or breakdown for directional clarity.</p>
+          </article>
+
+          <article class="sentiment-card is-bull reveal">
+            <div class="sentiment-card-top">
+              <span class="panel-label">Overall Market</span>
+              <span class="sentiment-pill sentiment-pill-bull">
+                <i class="bi bi-graph-up-arrow"></i> Bullish
+              </span>
+            </div>
+            <div class="sentiment-body">
+              <div class="sentiment-body-icon sentiment-body-icon-bull" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <circle cx="32" cy="35" r="17"></circle>
+                  <polygon points="20,26 10,14 22,16"></polygon>
+                  <polygon points="44,26 54,14 42,16"></polygon>
+                  <circle cx="26" cy="35" r="2.5" class="senti-eye"></circle>
+                  <circle cx="38" cy="35" r="2.5" class="senti-eye"></circle>
+                </svg>
+              </div>
+              <div>
+                <strong class="sentiment-mood-label">Bullish</strong>
+                <span class="sentiment-trend-note">Broad breadth positive</span>
+              </div>
+            </div>
+            <div class="sentiment-scale">
+              <div class="sentiment-scale-track">
+                <div class="sentiment-scale-fill sentiment-scale-fill-bull" data-anim-width="65"></div>
+              </div>
+              <div class="sentiment-scale-ends">
+                <span>Bearish</span>
+                <span>Neutral</span>
+                <span>Bullish</span>
+              </div>
+            </div>
+            <p class="sentiment-card-desc">Broad market breadth remains positive with macro tailwinds supporting risk-on positioning across selective sector leaders.</p>
+          </article>
+
+        </div>
+        <p class="sentiment-disclaimer reveal">Sentiment indicators are for educational reference only. Market conditions change rapidly. Always apply your own risk management before entering any position.</p>
+      </div>
+    </section>
+
+    <section class="section" id="calendar">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Economic Calendar</p>
+          <h2>Upcoming events that may drive market volatility.</h2>
+        </div>
+
+        <div class="calendar-wrapper reveal">
+          <div class="calendar-head">
+            <span>Date</span>
+            <span>Event</span>
+            <span>Category</span>
+            <span>Impact</span>
+          </div>
+          <div class="calendar-body" id="calendarBody"></div>
+        </div>
+
+        <div class="calendar-legend reveal">
+          <span class="impact-badge impact-high">High Impact</span>
+          <span class="impact-badge impact-medium">Medium Impact</span>
+          <span class="impact-badge impact-low">Low Impact</span>
+          <p>High-impact events often cause significant volatility. Adjust position sizing and stop-loss placement before these dates.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container contact-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Contact</p>
+          <h2>Start a conversation about your trading goals.</h2>
+        </div>
+
+        <div class="contact-grid">
+          <article class="contact-card reveal">
+            <h3>Direct contact</h3>
+            <div class="contact-methods">
+              <a href="tel:+919473828691"><i class="bi bi-telephone"></i><span>+91 94738 28691</span></a>
+              <a href="mailto:contact@thebeingseller.com"><i class="bi bi-envelope"></i><span>contact@thebeingseller.com</span></a>
+              <a href="https://wa.me/919473828691?text=Welcome%20and%20thank%20you%20for%20connecting.%0AWe%20believe%20in%20professional%2C%20reliable%2C%20and%20trustworthy%20trading%20guidance.%0AFeel%20free%20to%20share%20your%20queries%20or%20trading%20goals." target="_blank" rel="noreferrer noopener"><i class="bi bi-whatsapp"></i><span>WhatsApp Business Chat</span></a>
+            </div>
+            <div class="contact-quick-actions">
+              <button class="quick-template" type="button" data-template="I want help with market analysis for Nifty and BankNifty.">Market Analysis</button>
+              <button class="quick-template" type="button" data-template="I want consultation for portfolio review and risk alignment.">Portfolio Review</button>
+              <button class="quick-template" type="button" data-template="I want support with trade setup planning and disciplined execution.">Trade Setup</button>
+            </div>
+            <div class="contact-note">
+              <p>Available for market analysis, consultation, and trading setup guidance.</p>
+            </div>
+          </article>
+
+          <form class="contact-form reveal" id="contactForm" novalidate>
+            <div class="field-row">
+              <div class="field-group">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your full name" />
+              </div>
+              <div class="field-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" />
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field-group">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="+91 12345 67890" />
+              </div>
+              <div class="field-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Tell us about your requirements"></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-primary submit-btn" type="submit">Send Inquiry</button>
+            <div class="form-meta-row">
+              <span class="form-note">Professional response focused on clarity, suitability, and responsible trading.</span>
+              <span class="message-counter" id="messageCounter">0 / 300</span>
+            </div>
+            <p class="form-feedback" id="formFeedback" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="mobile-action-bar" aria-label="Quick mobile actions">
+    <a href="tel:+919473828691"><i class="bi bi-telephone"></i><span>Call</span></a>
+    <a href="https://wa.me/919473828691?text=I%20want%20to%20discuss%20my%20trading%20requirements." target="_blank" rel="noreferrer noopener"><i class="bi bi-whatsapp"></i><span>WhatsApp</span></a>
+    <a href="#contact"><i class="bi bi-chat-dots"></i><span>Inquiry</span></a>
+  </div>
+
+  <a
+    class="whatsapp-float"
+    href="https://wa.me/919473828691?text=Welcome%20and%20thank%20you%20for%20connecting.%0AWe%20believe%20in%20professional%2C%20reliable%2C%20and%20trustworthy%20trading%20guidance.%0AFeel%20free%20to%20share%20your%20queries%20or%20trading%20goals."
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="Chat on WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>
+        <strong>Thebeingseller</strong>
+        <p>Professional trading guidance for informed and disciplined market participation.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener">Instagram</a>
+        <a href="https://x.com" target="_blank" rel="noreferrer noopener">X</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year"></span> Thebeingseller. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
