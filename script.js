@@ -53,6 +53,8 @@ const apiBaseUrl = window.location.hostname === 'localhost' || window.location.h
   ? siteConfig.developmentApiBaseUrl
   : siteConfig.productionApiBaseUrl;
 
+const REQUEST_TIMEOUT_MS = 15000;
+
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
     const isOpen = navMenu.classList.toggle('is-open');
@@ -587,11 +589,18 @@ if (contactForm) {
       return;
     }
 
+    let timeoutId;
+
     try {
       if (submitButton) {
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
       }
+
+      const controller = new AbortController();
+      timeoutId = window.setTimeout(() => {
+        controller.abort();
+      }, REQUEST_TIMEOUT_MS);
 
       const response = await fetch(`${apiBaseUrl}/api/contact`, {
         method: 'POST',
@@ -599,9 +608,20 @@ if (contactForm) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
 
-      const result = await response.json();
+      const responseText = await response.text();
+      let result = {};
+      if (responseText) {
+        try {
+          result = JSON.parse(responseText);
+        } catch (_error) {
+          result = {
+            message: responseText,
+          };
+        }
+      }
 
       if (!response.ok) {
         throw new Error(result.message || 'Unable to submit inquiry right now.');
@@ -614,8 +634,16 @@ if (contactForm) {
       }
       ['name', 'email', 'phone', 'message'].forEach((fieldName) => setFieldErrorState(fieldName, false));
     } catch (error) {
-      setFeedback(error.message || 'Something went wrong while sending your inquiry.', 'error');
+      if (error.name === 'AbortError') {
+        setFeedback('Server response is taking too long. Please try again in a few seconds.', 'error');
+      } else {
+        setFeedback(error.message || 'Something went wrong while sending your inquiry.', 'error');
+      }
     } finally {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.textContent = 'Send Inquiry';
