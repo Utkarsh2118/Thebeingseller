@@ -54,6 +54,7 @@ const apiBaseUrl = window.location.hostname === 'localhost' || window.location.h
   : siteConfig.productionApiBaseUrl;
 
 const REQUEST_TIMEOUT_MS = 15000;
+let isContactSubmitting = false;
 
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
@@ -571,6 +572,14 @@ if (contactForm) {
   contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    if (isContactSubmitting) {
+      return;
+    }
+
+    const activeSubmitButton = event.submitter instanceof HTMLButtonElement
+      ? event.submitter
+      : submitButton;
+
     const formData = new FormData(contactForm);
     const payload = {
       name: String(formData.get('name') || '').trim(),
@@ -592,9 +601,12 @@ if (contactForm) {
     let timeoutId;
 
     try {
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Sending...';
+      isContactSubmitting = true;
+      setFeedback('', 'success');
+
+      if (activeSubmitButton) {
+        activeSubmitButton.disabled = true;
+        activeSubmitButton.textContent = 'Sending...';
       }
 
       const controller = new AbortController();
@@ -640,13 +652,15 @@ if (contactForm) {
         setFeedback(error.message || 'Something went wrong while sending your inquiry.', 'error');
       }
     } finally {
+      isContactSubmitting = false;
+
       if (timeoutId) {
         window.clearTimeout(timeoutId);
       }
 
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Send Inquiry';
+      if (activeSubmitButton) {
+        activeSubmitButton.disabled = false;
+        activeSubmitButton.textContent = 'Send Inquiry';
       }
     }
   });
