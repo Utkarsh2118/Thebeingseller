@@ -1,5 +1,5 @@
 const siteConfig = {
-  developmentApiBaseUrl: 'http://localhost:5000',
+  const apiBaseUrl = "https://thebeingseller-api.onrender.com";
   productionApiBaseUrl: 'https://thebeingseller-api.onrender.com',
 };
 
@@ -53,7 +53,7 @@ const apiBaseUrl = window.location.hostname === 'localhost' || window.location.h
   ? siteConfig.developmentApiBaseUrl
   : siteConfig.productionApiBaseUrl;
 
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 60000;
 let isContactSubmitting = false;
 
 if (navToggle && navMenu) {
@@ -797,3 +797,11 @@ const initializeAnimatedBars = () => {
 };
 
 initializeAnimatedBars();
+const cors = require("cors");
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://thebeingseller.vercel.app"
+  ]
+}));
