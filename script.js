@@ -1,6 +1,6 @@
 const siteConfig = {
-  const apiBaseUrl = "https://thebeingseller-api.onrender.com";
-  productionApiBaseUrl: 'https://thebeingseller-api.onrender.com',
+  apiBaseUrl: "https://thebeingseller-api.onrender.com",
+  productionApiBaseUrl: "https://thebeingseller-api.onrender.com",
 };
 
 const newsItems = [
