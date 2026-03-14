@@ -1,6 +1,6 @@
 const siteConfig = {
-  apiBaseUrl: "https://thebeingseller-api.onrender.com",
-  productionApiBaseUrl: "https://thebeingseller-api.onrender.com",
+  developmentApiBaseUrl: 'http://localhost:5000',
+  productionApiBaseUrl: 'https://thebeingseller-api.onrender.com',
 };
 
 const newsItems = [
@@ -53,7 +53,7 @@ const apiBaseUrl = window.location.hostname === 'localhost' || window.location.h
   ? siteConfig.developmentApiBaseUrl
   : siteConfig.productionApiBaseUrl;
 
-const REQUEST_TIMEOUT_MS = 60000;
+const REQUEST_TIMEOUT_MS = 15000;
 let isContactSubmitting = false;
 
 if (navToggle && navMenu) {
@@ -448,11 +448,12 @@ const loadTradingViewChart = () => {
       style: '1',
       locale: 'en',
       enable_publishing: false,
-      hide_top_toolbar: false,
+      hide_top_toolbar: true,
       hide_legend: false,
       save_image: false,
       withdateranges: true,
-      details: true,
+      details: false,
+      allow_symbol_change: false,
       studies: ['RSI@tv-basicstudies', 'MACD@tv-basicstudies'],
       container_id: 'tradingview-chart',
     });
@@ -556,7 +557,7 @@ const setFieldErrorState = (fieldName, hasError) => {
   }
 
   field.classList.toggle('field-error', hasError);
-};
+}
 
 const setFeedback = (message, type) => {
   if (!formFeedback) {
@@ -685,7 +686,7 @@ const economicCalendarEvents = [
     date: 'Apr 12',
     day: 'Saturday',
     event: 'India Inflation Data (CPI)',
-    description: 'Consumer Price Index — key indicator for RBI rate path expectations.',
+    description: 'Consumer Price Index � key indicator for RBI rate path expectations.',
     category: 'Macro Data',
     impact: 'high',
   },
@@ -701,7 +702,7 @@ const economicCalendarEvents = [
     date: 'Apr 22',
     day: 'Tuesday',
     event: 'Q4 Corporate Earnings Season',
-    description: 'Major index-heavy stocks begin reporting quarterly results — index mover.',
+    description: 'Major index-heavy stocks begin reporting quarterly results � index mover.',
     category: 'Earnings',
     impact: 'high',
   },
@@ -709,7 +710,7 @@ const economicCalendarEvents = [
     date: 'Apr 29',
     day: 'Tuesday',
     event: 'US Federal Reserve Meeting',
-    description: 'Fed rate decision and forward guidance — global risk sentiment impact.',
+    description: 'Fed rate decision and forward guidance � global risk sentiment impact.',
     category: 'Global',
     impact: 'high',
   },
