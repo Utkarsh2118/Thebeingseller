@@ -26,6 +26,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-shell">
+      <span class="loader-mark">TS</span>
+      <p>Preparing live trading desk...</p>
+      <div class="loader-bar" aria-hidden="true">
+        <span id="loaderBar"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-progress" aria-hidden="true">
+    <span id="scrollProgressBar"></span>
+  </div>
+
   <div class="page-aura page-aura-left" aria-hidden="true"></div>
   <div class="page-aura page-aura-right" aria-hidden="true"></div>
 
@@ -61,6 +75,16 @@
 
   <main>
     <section class="hero section">
+      <div class="hero-market-bg" aria-hidden="true">
+        <span class="hero-grid-line line-1"></span>
+        <span class="hero-grid-line line-2"></span>
+        <span class="hero-grid-line line-3"></span>
+        <span class="hero-price-path"></span>
+        <span class="hero-price-node node-1"></span>
+        <span class="hero-price-node node-2"></span>
+        <span class="hero-price-node node-3"></span>
+      </div>
+
       <div class="container">
         <div class="market-session-strip reveal" id="marketSessionStrip" aria-live="polite">
           <div class="session-main">
@@ -89,6 +113,21 @@
             <span><i class="bi bi-bar-chart-line"></i> Live market perspective</span>
             <span><i class="bi bi-shield-check"></i> Risk-first planning</span>
             <span><i class="bi bi-people"></i> Client-focused guidance</span>
+          </div>
+
+          <div class="hero-signal-strip reveal" aria-label="Live desk signals">
+            <article>
+              <span>Desk Confidence</span>
+              <strong id="heroSignalConfidence">78%</strong>
+            </article>
+            <article>
+              <span>Volatility Tone</span>
+              <strong id="heroSignalVolatility">Moderate</strong>
+            </article>
+            <article>
+              <span>Execution Window</span>
+              <strong id="heroSignalWindow">Intraday Focus</strong>
+            </article>
           </div>
         </div>
 
@@ -264,7 +303,7 @@
     <section class="section team-section" id="team">
       <div class="container team-layout">
         <div class="section-heading reveal">
-          <p class="eyebrow">Our Expert Trading Team</p>
+          <p class="eyebrow">Our Expert  Partners</p>
           <h2>Meet Our Trading Partners</h2>
           <p>
             A focused trading desk built around derivatives strategy, chart-based decision-making,
@@ -359,7 +398,7 @@
               />
               <span class="team-specialization-badge">
                 <i class="bi bi-diagram-3"></i>
-                Options Scalper
+                Options Chain
               </span>
             </div>
 
@@ -367,7 +406,7 @@
               <div class="team-card-header">
                 <div>
                   <h3>Devansh Srivastava</h3>
-                  <p class="team-role"> Chart Analyst</p>
+                  <p class="team-role">Options Chain Analyst</p>
                 </div>
                 <span class="team-icon-chip" aria-hidden="true">
                   <i class="bi bi-grid-1x2-fill"></i>
@@ -668,8 +707,52 @@
           <h2>Built for serious traders who value process, transparency, and responsible market participation.</h2>
         </div>
 
-        <div class="trust-grid">
-          <article class="trust-proof-card reveal">
+        <div class="testimonial-slider reveal" id="testimonialSlider" aria-label="Client testimonials slider">
+          <div class="trust-grid" id="trustGrid">
+            <article class="trust-proof-card is-active" data-slide="0" aria-hidden="false">
+              <span class="trust-badge">Client Perspective</span>
+              <p>
+                “The guidance is practical and calm. The focus stays on setups, risk, and execution discipline rather than noise.”
+              </p>
+              <strong>Active Index Trader</strong>
+            </article>
+
+            <article class="trust-proof-card" data-slide="1" aria-hidden="true">
+              <span class="trust-badge">Client Perspective</span>
+              <p>
+                “What stands out is the emphasis on capital protection and clarity. Every discussion starts with risk before opportunity.”
+              </p>
+              <strong>Options Participant</strong>
+            </article>
+
+            <article class="trust-proof-card" data-slide="2" aria-hidden="true">
+              <span class="trust-badge">Client Perspective</span>
+              <p>
+                “The approach feels professional and data-backed. It helps filter impulsive decisions and keeps the process consistent.”
+              </p>
+              <strong>Independent Market Learner</strong>
+            </article>
+          </div>
+
+          <div class="testimonial-controls" aria-label="Testimonial controls">
+            <button type="button" class="testimonial-btn" id="testimonialPrev" aria-label="Previous testimonial">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+
+            <div class="testimonial-dots" id="testimonialDots" role="tablist" aria-label="Choose testimonial">
+              <button type="button" class="testimonial-dot is-active" data-slide-to="0" role="tab" aria-selected="true" aria-label="Show testimonial 1"></button>
+              <button type="button" class="testimonial-dot" data-slide-to="1" role="tab" aria-selected="false" aria-label="Show testimonial 2"></button>
+              <button type="button" class="testimonial-dot" data-slide-to="2" role="tab" aria-selected="false" aria-label="Show testimonial 3"></button>
+            </div>
+
+            <button type="button" class="testimonial-btn" id="testimonialNext" aria-label="Next testimonial">
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="trust-grid trust-grid-static">
+          <article class="trust-proof-card reveal trust-proof-static">
             <span class="trust-badge">Client Perspective</span>
             <p>
               “The guidance is practical and calm. The focus stays on setups, risk, and execution discipline rather than noise.”
@@ -677,7 +760,7 @@
             <strong>Active Index Trader</strong>
           </article>
 
-          <article class="trust-proof-card reveal">
+          <article class="trust-proof-card reveal trust-proof-static">
             <span class="trust-badge">Client Perspective</span>
             <p>
               “What stands out is the emphasis on capital protection and clarity. Every discussion starts with risk before opportunity.”
@@ -685,7 +768,7 @@
             <strong>Options Participant</strong>
           </article>
 
-          <article class="trust-proof-card reveal">
+          <article class="trust-proof-card reveal trust-proof-static">
             <span class="trust-badge">Client Perspective</span>
             <p>
               “The approach feels professional and data-backed. It helps filter impulsive decisions and keeps the process consistent.”
@@ -718,7 +801,7 @@
             <div class="card-header">
               <div>
                 <span class="panel-label">Advanced Chart</span>
-                <h3>Nifty-focused TradingView workspace</h3>
+                <h3>BankNifty live chart</h3>
               </div>
               <span class="dot-indicator">Live</span>
             </div>
@@ -907,6 +990,74 @@
       </div>
     </section>
 
+    <section class="section rr-section" id="calculator">
+      <div class="container rr-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Risk Toolkit</p>
+          <h2>Plan risk and position size before every trade.</h2>
+          <p>Use this calculator to keep exposure controlled and decision-making process-driven.</p>
+        </div>
+
+        <div class="rr-grid">
+          <article class="rr-card reveal">
+            <div class="rr-card-head">
+              <span class="panel-label">Risk-Reward</span>
+              <h3>Setup Quality Check</h3>
+            </div>
+
+            <div class="rr-input-grid">
+              <label class="rr-input-field" for="entryPrice">
+                <span>Entry Price</span>
+                <input id="entryPrice" type="number" min="0" step="0.01" placeholder="e.g. 24500" />
+              </label>
+              <label class="rr-input-field" for="stopPrice">
+                <span>Stop Loss</span>
+                <input id="stopPrice" type="number" min="0" step="0.01" placeholder="e.g. 24430" />
+              </label>
+              <label class="rr-input-field" for="targetPrice">
+                <span>Target</span>
+                <input id="targetPrice" type="number" min="0" step="0.01" placeholder="e.g. 24640" />
+              </label>
+            </div>
+
+            <button class="btn btn-primary rr-calc-btn" type="button" id="rrCalculateBtn">Calculate Ratio</button>
+
+            <div class="rr-output" id="rrOutput" aria-live="polite">
+              <p>Enter setup values to evaluate reward-to-risk.</p>
+            </div>
+          </article>
+
+          <article class="rr-card reveal">
+            <div class="rr-card-head">
+              <span class="panel-label">Position Sizing</span>
+              <h3>Capital Protection Model</h3>
+            </div>
+
+            <div class="rr-input-grid">
+              <label class="rr-input-field" for="capitalAmount">
+                <span>Total Capital (INR)</span>
+                <input id="capitalAmount" type="number" min="0" step="1" placeholder="e.g. 500000" />
+              </label>
+              <label class="rr-input-field" for="riskPercent">
+                <span>Risk % per Trade</span>
+                <input id="riskPercent" type="number" min="0.1" step="0.1" placeholder="e.g. 1" />
+              </label>
+              <label class="rr-input-field" for="slPoints">
+                <span>Stop Distance (points)</span>
+                <input id="slPoints" type="number" min="0.1" step="0.1" placeholder="e.g. 70" />
+              </label>
+            </div>
+
+            <button class="btn btn-secondary rr-calc-btn" type="button" id="positionCalculateBtn">Calculate Quantity</button>
+
+            <div class="rr-output" id="positionOutput" aria-live="polite">
+              <p>Set capital, risk, and stop distance to derive size.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="contact">
       <div class="container contact-layout">
         <div class="section-heading reveal">
@@ -970,6 +1121,7 @@
   <div class="mobile-action-bar" aria-label="Quick mobile actions">
     <a href="tel:+919473828691"><i class="bi bi-telephone"></i><span>Call</span></a>
     <a href="https://wa.me/919473828691?text=I%20want%20to%20discuss%20my%20trading%20requirements." target="_blank" rel="noreferrer noopener"><i class="bi bi-whatsapp"></i><span>WhatsApp</span></a>
+    <a href="#calculator"><i class="bi bi-calculator"></i><span>Plan</span></a>
     <a href="#contact"><i class="bi bi-chat-dots"></i><span>Inquiry</span></a>
   </div>
 
@@ -998,7 +1150,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260315-niftyfix2"></script>
 </body>
 </html>
-
