@@ -65,8 +65,9 @@
         <a href="#services">Services</a>
         <a href="#strategies">Strategies</a>
         <a href="#market">Market</a>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to Premium Light theme" title="Current: Minimal Pro">
           <i class="bi bi-moon-stars"></i>
+          <span>Minimal Pro</span>
         </button>
        <a href="#contact" class="btn btn-primary">Contact Now</a>
       </div>
@@ -487,7 +488,7 @@
 
           <article class="strategy-card reveal">
             <div class="strategy-icon">
-              <i class="bi bi-shield-half"></i>
+              <i class="bi bi-shield-check"></i>
             </div>
             <h3>Options Hedging</h3>
             <p>Building protective structures using options to limit downside exposure while maintaining market participation on favorable moves.</p>
@@ -953,6 +954,52 @@
       </div>
     </section>
 
+    <section class="section" id="mood-thermometer">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Market Mood Thermometer</p>
+          <h2>A live confidence meter that defines when to trade big, trade light, or protect capital.</h2>
+        </div>
+
+        <article class="mood-thermo-card reveal" aria-live="polite">
+          <div class="mood-thermo-layout">
+            <div class="mood-gauge-wrap">
+              <div class="mood-gauge" id="marketMoodGauge" role="img" aria-label="Market confidence score 64 out of 100">
+                <div class="mood-gauge-core">
+                  <strong id="marketMoodValue">64</strong>
+                  <span>/ 100</span>
+                </div>
+              </div>
+              <span class="mood-zone mood-zone-caution" id="marketMoodZone">Caution Zone</span>
+            </div>
+
+            <div class="mood-thermo-copy">
+              <span class="panel-label">Execution Framework</span>
+              <h3 id="marketMoodTitle">Balanced Confidence</h3>
+              <p id="marketMoodGuidance">Momentum is tradable but selective. Wait for clean confirmations and avoid forcing setups.</p>
+
+              <div class="mood-meta">
+                <p><strong>Suggested stance:</strong> <span id="marketMoodStance">Selective long setups</span></p>
+                <p><strong>Risk note:</strong> <span id="marketMoodRisk">Keep per-trade risk capped near 1%.</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mood-scale" aria-hidden="true">
+            <div class="mood-scale-track">
+              <span class="mood-scale-marker" id="marketMoodMarker"></span>
+            </div>
+            <div class="mood-scale-legend">
+              <span>0</span>
+              <span>40</span>
+              <span>70</span>
+              <span>100</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="section" id="sentiment">
       <div class="container">
         <div class="section-heading reveal">
@@ -1150,7 +1197,7 @@
               </label>
             </div>
 
-            <button class="btn btn-secondary rr-calc-btn" type="button" id="positionCalculateBtn">Calculate Quantity</button>
+            <button class="btn btn-primary rr-calc-btn" type="button" id="positionCalculateBtn">Calculate Quantity</button>
 
             <div class="whatif-panel" aria-label="What if risk scenarios">
               <span>What-if Scenarios</span>
@@ -1200,7 +1247,7 @@
             <h3>Direct contact</h3>
             <div class="contact-methods">
               <a href="tel:+919473828691"><i class="bi bi-telephone"></i><span>+91 94738 28691</span></a>
-              <a href="mailto:contact@thebeingseller.com"><i class="bi bi-envelope"></i><span>thebeingseller9473@gmail.com</span></a>
+              <a href="mailto:thebeingseller9473@gmail.com"><i class="bi bi-envelope"></i><span>thebeingseller9473@gmail.com</span></a>
               <a href="https://wa.me/919473828691?text=Welcome%20and%20thank%20you%20for%20connecting.%0AWe%20believe%20in%20professional%2C%20reliable%2C%20and%20trustworthy%20trading%20guidance.%0AFeel%20free%20to%20share%20your%20queries%20or%20trading%20goals." target="_blank" rel="noreferrer noopener"><i class="bi bi-whatsapp"></i><span>WhatsApp Business Chat</span></a>
             </div>
             <div class="contact-quick-actions">
@@ -1274,7 +1321,7 @@
       <div class="footer-links">
         <a href="https://www.linkedin.com/in/ashutosh-srivastava-3789653b6/" target="_blank" rel="noreferrer noopener">LinkedIn</a>
         <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener">Instagram</a>
-        <a href="https://x.com/thebeingseller1" target="_blank" rel="noreferrer noopener">X</a>
+        <a href="https://x.com" target="_blank" rel="noreferrer noopener">X</a>
       </div>
       <p class="footer-copy">&copy; <span id="year"></span> Thebeingseller. All rights reserved.</p>
     </div>
