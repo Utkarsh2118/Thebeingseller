@@ -1,6 +1,6 @@
 const siteConfig = {
-  developmentApiBaseUrl: 'http://localhost:5000',
-  productionApiBaseUrl: 'https://thebeingseller-api.onrender.com',
+  developmentApiBaseUrl: "http://127.0.0.1:5000",
+  productionApiBaseUrl: "https://thebeingseller-api.onrender.com",
 };
 
 const newsItems = [
@@ -48,13 +48,83 @@ const newsList = document.getElementById('newsList');
 const messageInput = document.getElementById('message');
 const messageCounter = document.getElementById('messageCounter');
 const quickTemplateButtons = document.querySelectorAll('.quick-template');
+const pageLoader = document.getElementById('pageLoader');
+const loaderBar = document.getElementById('loaderBar');
+const scrollProgressBar = document.getElementById('scrollProgressBar');
+const testimonialSlider = document.getElementById('testimonialSlider');
+const testimonialCards = document.querySelectorAll('#testimonialSlider .trust-proof-card');
+const testimonialDots = document.querySelectorAll('#testimonialSlider .testimonial-dot');
+const testimonialPrev = document.getElementById('testimonialPrev');
+const testimonialNext = document.getElementById('testimonialNext');
+const rrCalculateBtn = document.getElementById('rrCalculateBtn');
+const positionCalculateBtn = document.getElementById('positionCalculateBtn');
+const heroSignalConfidence = document.getElementById('heroSignalConfidence');
+const heroSignalVolatility = document.getElementById('heroSignalVolatility');
+const heroSignalWindow = document.getElementById('heroSignalWindow');
 
 const apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? siteConfig.developmentApiBaseUrl
+  ? (siteConfig.developmentApiBaseUrl || siteConfig.productionApiBaseUrl)
   : siteConfig.productionApiBaseUrl;
 
-const REQUEST_TIMEOUT_MS = 15000;
+const REQUEST_TIMEOUT_MS = 60000;
 let isContactSubmitting = false;
+
+const initializePageLoader = () => {
+  if (!pageLoader || !loaderBar) {
+    return;
+  }
+
+  const hasSeenLoader = sessionStorage.getItem('ts_loader_seen') === '1';
+
+  if (hasSeenLoader) {
+    pageLoader.classList.add('is-hidden');
+    return;
+  }
+
+  document.body.classList.add('is-loading');
+  let progress = 8;
+  loaderBar.style.width = `${progress}%`;
+
+  const ticker = window.setInterval(() => {
+    progress = Math.min(progress + Math.random() * 11, 90);
+    loaderBar.style.width = `${progress}%`;
+  }, 120);
+
+  const closeLoader = () => {
+    window.clearInterval(ticker);
+    loaderBar.style.width = '100%';
+
+    window.setTimeout(() => {
+      pageLoader.classList.add('is-hidden');
+      document.body.classList.remove('is-loading');
+      sessionStorage.setItem('ts_loader_seen', '1');
+    }, 260);
+  };
+
+  window.addEventListener('load', closeLoader, { once: true });
+  window.setTimeout(closeLoader, 1800);
+};
+
+initializePageLoader();
+
+const initializeRevealStagger = () => {
+  const sectionRevealIndex = new Map();
+
+  revealElements.forEach((element) => {
+    const parentSection = element.closest('section') || element.closest('header');
+
+    if (!parentSection) {
+      return;
+    }
+
+    const currentIndex = sectionRevealIndex.get(parentSection) || 0;
+    const delay = Math.min(currentIndex * 90, 540);
+    element.style.setProperty('--reveal-delay', `${delay}ms`);
+    sectionRevealIndex.set(parentSection, currentIndex + 1);
+  });
+};
+
+initializeRevealStagger();
 
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
@@ -127,8 +197,11 @@ const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) {
+        entry.target.classList.remove('is-inview');
         return;
       }
+
+      entry.target.classList.add('is-inview');
 
       const currentId = entry.target.getAttribute('id');
       navLinks.forEach((link) => {
@@ -197,6 +270,191 @@ const renderNews = () => {
 
 renderNews();
 
+const initializeScrollProgress = () => {
+  if (!scrollProgressBar) {
+    return;
+  }
+
+  const updateProgress = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = pageHeight > 0 ? Math.min((scrollTop / pageHeight) * 100, 100) : 0;
+    scrollProgressBar.style.width = `${progress}%`;
+  };
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+};
+
+initializeScrollProgress();
+
+const initializeTestimonialSlider = () => {
+  if (!testimonialSlider || !testimonialCards.length) {
+    return;
+  }
+
+  let activeIndex = 0;
+  let intervalId;
+
+  const renderSlide = (index) => {
+    activeIndex = (index + testimonialCards.length) % testimonialCards.length;
+
+    testimonialCards.forEach((card, cardIndex) => {
+      const isActive = cardIndex === activeIndex;
+      card.classList.toggle('is-active', isActive);
+      card.setAttribute('aria-hidden', String(!isActive));
+    });
+
+    testimonialDots.forEach((dot, dotIndex) => {
+      const isActive = dotIndex === activeIndex;
+      dot.classList.toggle('is-active', isActive);
+      dot.setAttribute('aria-selected', String(isActive));
+    });
+  };
+
+  const restartAutoPlay = () => {
+    if (intervalId) {
+      window.clearInterval(intervalId);
+    }
+
+    intervalId = window.setInterval(() => {
+      renderSlide(activeIndex + 1);
+    }, 4800);
+  };
+
+  testimonialPrev?.addEventListener('click', () => {
+    renderSlide(activeIndex - 1);
+    restartAutoPlay();
+  });
+
+  testimonialNext?.addEventListener('click', () => {
+    renderSlide(activeIndex + 1);
+    restartAutoPlay();
+  });
+
+  testimonialDots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const index = Number(dot.dataset.slideTo || 0);
+      renderSlide(index);
+      restartAutoPlay();
+    });
+  });
+
+  testimonialSlider.addEventListener('mouseenter', () => {
+    if (intervalId) {
+      window.clearInterval(intervalId);
+    }
+  });
+
+  testimonialSlider.addEventListener('mouseleave', () => {
+    restartAutoPlay();
+  });
+
+  renderSlide(0);
+  restartAutoPlay();
+};
+
+initializeTestimonialSlider();
+
+const initializeHeroSignals = () => {
+  if (!heroSignalConfidence || !heroSignalVolatility || !heroSignalWindow) {
+    return;
+  }
+
+  const snapshots = [
+    { confidence: '78%', volatility: 'Moderate', window: 'Intraday Focus' },
+    { confidence: '82%', volatility: 'Elevated', window: 'Breakout Watch' },
+    { confidence: '74%', volatility: 'Balanced', window: 'Range Trade' },
+    { confidence: '86%', volatility: 'Expanding', window: 'Momentum Push' },
+  ];
+
+  let activeSnapshot = 0;
+
+  const renderSnapshot = (snapshot) => {
+    heroSignalConfidence.textContent = snapshot.confidence;
+    heroSignalVolatility.textContent = snapshot.volatility;
+    heroSignalWindow.textContent = snapshot.window;
+  };
+
+  renderSnapshot(snapshots[activeSnapshot]);
+
+  window.setInterval(() => {
+    activeSnapshot = (activeSnapshot + 1) % snapshots.length;
+    renderSnapshot(snapshots[activeSnapshot]);
+  }, 4400);
+};
+
+initializeHeroSignals();
+
+const formatInr = (value) => `INR ${Math.round(value).toLocaleString('en-IN')}`;
+
+const initializeRiskToolkit = () => {
+  const entryPriceInput = document.getElementById('entryPrice');
+  const stopPriceInput = document.getElementById('stopPrice');
+  const targetPriceInput = document.getElementById('targetPrice');
+  const rrOutput = document.getElementById('rrOutput');
+
+  const capitalAmountInput = document.getElementById('capitalAmount');
+  const riskPercentInput = document.getElementById('riskPercent');
+  const slPointsInput = document.getElementById('slPoints');
+  const positionOutput = document.getElementById('positionOutput');
+
+  if (!rrCalculateBtn || !positionCalculateBtn || !rrOutput || !positionOutput) {
+    return;
+  }
+
+  rrCalculateBtn.addEventListener('click', () => {
+    const entry = Number(entryPriceInput?.value || 0);
+    const stop = Number(stopPriceInput?.value || 0);
+    const target = Number(targetPriceInput?.value || 0);
+
+    if (!(entry > 0) || !(stop > 0) || !(target > 0)) {
+      rrOutput.innerHTML = '<p>Please enter valid positive values for entry, stop, and target.</p>';
+      return;
+    }
+
+    const risk = Math.abs(entry - stop);
+    const reward = Math.abs(target - entry);
+
+    if (risk === 0) {
+      rrOutput.innerHTML = '<p>Entry and stop cannot be identical. Define a meaningful stop-loss distance.</p>';
+      return;
+    }
+
+    const ratio = reward / risk;
+    const ratioLabel = ratio >= 2 ? 'good' : ratio >= 1.3 ? 'ok' : 'risky';
+    const verdict = ratio >= 2 ? 'Favorable Setup' : ratio >= 1.3 ? 'Tradable Setup' : 'High-Risk Setup';
+
+    rrOutput.innerHTML = `
+      <strong>R:R Ratio = 1 : ${ratio.toFixed(2)}</strong>
+      <p>Risk per unit: <strong>${risk.toFixed(2)}</strong> points | Reward per unit: <strong>${reward.toFixed(2)}</strong> points</p>
+      <span class="rr-chip ${ratioLabel}">${verdict}</span>
+    `;
+  });
+
+  positionCalculateBtn.addEventListener('click', () => {
+    const capital = Number(capitalAmountInput?.value || 0);
+    const riskPercent = Number(riskPercentInput?.value || 0);
+    const slPoints = Number(slPointsInput?.value || 0);
+
+    if (!(capital > 0) || !(riskPercent > 0) || !(slPoints > 0)) {
+      positionOutput.innerHTML = '<p>Please enter valid values for capital, risk %, and stop distance.</p>';
+      return;
+    }
+
+    const maxRiskAmount = (capital * riskPercent) / 100;
+    const quantity = Math.max(Math.floor(maxRiskAmount / slPoints), 0);
+
+    positionOutput.innerHTML = `
+      <strong>Recommended Quantity: ${quantity.toLocaleString('en-IN')} units</strong>
+      <p>Max capital at risk: <strong>${formatInr(maxRiskAmount)}</strong></p>
+      <p>Per-trade risk model keeps drawdown controlled over a sequence of trades.</p>
+    `;
+  });
+};
+
+initializeRiskToolkit();
+
 const initializeContactAssist = () => {
   if (messageInput && messageCounter) {
     messageInput.setAttribute('maxlength', '300');
@@ -223,6 +481,63 @@ const initializeContactAssist = () => {
 };
 
 initializeContactAssist();
+
+const initializeMagneticCtaAndCursorGlow = () => {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+  if (finePointer && !reducedMotion) {
+    document.body.classList.add('cursor-glow-enabled');
+
+    let rafId = null;
+    let pendingX = 0;
+    let pendingY = 0;
+
+    const paintGlow = () => {
+      document.body.style.setProperty('--cursor-x', `${pendingX}px`);
+      document.body.style.setProperty('--cursor-y', `${pendingY}px`);
+      rafId = null;
+    };
+
+    window.addEventListener('mousemove', (event) => {
+      pendingX = event.clientX;
+      pendingY = event.clientY;
+
+      if (rafId === null) {
+        rafId = window.requestAnimationFrame(paintGlow);
+      }
+    });
+  }
+
+  if (reducedMotion || !finePointer) {
+    return;
+  }
+
+  const magneticTargets = document.querySelectorAll('.hero-actions .btn, .contact-quick-actions .quick-template');
+
+  magneticTargets.forEach((target) => {
+    target.classList.add('is-magnetic');
+
+    target.addEventListener('pointermove', (event) => {
+      const rect = target.getBoundingClientRect();
+      const offsetX = event.clientX - (rect.left + (rect.width / 2));
+      const offsetY = event.clientY - (rect.top + (rect.height / 2));
+
+      const moveX = offsetX * 0.16;
+      const moveY = (offsetY * 0.16) - 2;
+      target.style.transform = `translate3d(${moveX.toFixed(2)}px, ${moveY.toFixed(2)}px, 0)`;
+    });
+
+    const resetMagnet = () => {
+      target.style.transform = '';
+    };
+
+    target.addEventListener('pointerleave', resetMagnet);
+    target.addEventListener('blur', resetMagnet);
+  });
+};
+
+initializeMagneticCtaAndCursorGlow();
 
 const getCurrentTheme = () => (document.body.classList.contains('light-theme') ? 'light' : 'dark');
 
@@ -393,6 +708,7 @@ initializeThemeToggle();
 
 let hasLoadedChart = false;
 let hasLoadedTickerTape = false;
+let activeTradingViewChartScript = null;
 
 const loadTickerTape = () => {
   const tickerContainer = document.getElementById('marketTickerTape');
@@ -410,9 +726,9 @@ const loadTickerTape = () => {
   script.dataset.tickerTapeScript = 'true';
   script.text = JSON.stringify({
     symbols: [
-      { proName: 'NSE:NIFTY', title: 'Nifty' },
-      { proName: 'BSE:SENSEX', title: 'Sensex' },
       { proName: 'NSE:BANKNIFTY', title: 'BankNifty' },
+      { proName: 'BSE:SENSEX', title: 'Sensex' },
+      { proName: 'NSE:NIFTY', title: 'Nifty 50' },
     ],
     showSymbolLogo: false,
     isTransparent: true,
@@ -426,56 +742,50 @@ const loadTickerTape = () => {
 
 const loadTradingViewChart = () => {
   const chartContainer = document.getElementById('tradingview-chart');
-  if (!chartContainer) {
-    return;
-  }
+  if (!chartContainer) return;
 
-  const initializeWidget = () => {
-    if (!window.TradingView) {
-      chartContainer.innerHTML = '<p style="padding: 1rem; color: #96abc1;">Unable to load TradingView chart right now.</p>';
-      return;
-    }
+  chartContainer.replaceChildren();
 
-    chartContainer.innerHTML = '';
-    new window.TradingView.widget({
-      autosize: true,
-      width: '100%',
-      height: 600,
-      symbol: 'NSE:NIFTY',
-      interval: '15',
-      timezone: 'Asia/Kolkata',
-      theme: getCurrentTheme(),
-      style: '1',
-      locale: 'en',
-      enable_publishing: false,
-      hide_top_toolbar: true,
-      hide_legend: false,
-      save_image: false,
-      withdateranges: true,
-      details: false,
-      allow_symbol_change: false,
-      studies: ['RSI@tv-basicstudies', 'MACD@tv-basicstudies'],
-      container_id: 'tradingview-chart',
-    });
-  };
+  // Remove only advanced-chart scripts so we don't break other widgets like ticker tape.
+  document
+    .querySelectorAll('script[data-tradingview-advanced-chart="true"], script[src*="embed-widget-advanced-chart.js"]')
+    .forEach((scriptNode) => scriptNode.remove());
 
-  if (window.TradingView) {
-    initializeWidget();
-    return;
-  }
+  const container = document.createElement('div');
+  container.className = 'tradingview-widget-container';
+  container.style.width = '100%';
+  container.style.height = '100%';
 
-  const existingScript = document.querySelector('script[data-tradingview-script="true"]');
-  if (existingScript) {
-    existingScript.addEventListener('load', initializeWidget, { once: true });
-    return;
-  }
+  const widget = document.createElement('div');
+  widget.className = 'tradingview-widget-container__widget';
+  widget.style.width = '100%';
+  widget.style.height = '100%';
+  container.appendChild(widget);
 
-  const script = document.createElement('script');
-  script.src = 'https://s3.tradingview.com/tv.js';
-  script.async = true;
-  script.dataset.tradingviewScript = 'true';
-  script.addEventListener('load', initializeWidget, { once: true });
-  document.body.appendChild(script);
+  const loader = document.createElement('script');
+  loader.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  loader.async = true;
+  loader.dataset.tradingviewAdvancedChart = 'true';
+  loader.text = JSON.stringify({
+    autosize: true,
+    symbol: 'BSE:SENSEX',
+    interval: '15',
+    timezone: 'Asia/Kolkata',
+    theme: getCurrentTheme(),
+    style: '1',
+    locale: 'en',
+    allow_symbol_change: false,
+    hide_top_toolbar: false,
+    hide_side_toolbar: false,
+    enable_publishing: false,
+    save_image: false,
+    withdateranges: true,
+    support_host: 'https://www.tradingview.com',
+  });
+
+  container.appendChild(loader);
+  chartContainer.appendChild(container);
+  activeTradingViewChartScript = loader;
 };
 
 const refreshMarketWidgets = () => {
