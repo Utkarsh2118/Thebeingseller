@@ -3363,6 +3363,213 @@ body.light-theme .rr-input-field input {
   border-color: rgba(80, 110, 150, 0.18);
 }
 
+.process-grid,
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.process-card,
+.case-card,
+.consultation-shell,
+.identity-card,
+.sample-report-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--card-from), var(--card-to));
+  box-shadow: var(--shadow);
+}
+
+.process-card,
+.case-card,
+.identity-card {
+  padding: 1.35rem;
+}
+
+.process-step,
+.case-chip,
+.session-mode-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.34rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(37, 195, 166, 0.14);
+  border: 1px solid rgba(37, 195, 166, 0.28);
+  color: var(--accent);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.process-card h3,
+.case-card h3,
+.identity-card h3 {
+  margin: 0.8rem 0 0.6rem;
+}
+
+.consultation-shell {
+  padding: 1.1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-selector {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.profile-option {
+  min-height: 46px;
+  border: 1px solid rgba(120, 164, 208, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.profile-option:hover,
+.profile-option.is-active {
+  border-color: rgba(37, 195, 166, 0.35);
+  background: rgba(37, 195, 166, 0.12);
+  transform: translateY(-2px);
+}
+
+.consultation-plan {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(120, 164, 208, 0.18);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.consultation-plan ul,
+.identity-card ul {
+  margin: 0.8rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.session-mode-strip {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(120, 164, 208, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.session-mode-strip p {
+  margin: 0;
+  font-size: 0.86rem;
+}
+
+.whatif-panel {
+  margin-top: 0.95rem;
+  padding: 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(120, 164, 208, 0.2);
+  background: rgba(255, 255, 255, 0.025);
+  display: grid;
+  gap: 0.6rem;
+}
+
+.whatif-panel > span {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.whatif-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.whatif-btn {
+  min-height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(120, 164, 208, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.whatif-btn.is-active,
+.whatif-btn:hover {
+  border-color: rgba(37, 195, 166, 0.35);
+  background: rgba(37, 195, 166, 0.12);
+}
+
+.whatif-panel small {
+  color: var(--muted);
+}
+
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.identity-card.do h3 {
+  color: var(--accent);
+}
+
+.identity-card.dont h3 {
+  color: #ff9c9c;
+}
+
+.sample-report-card {
+  padding: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sample-report-card h2 {
+  margin: 0.4rem 0 0.6rem;
+}
+
+.sample-report-actions {
+  display: grid;
+  gap: 0.55rem;
+  justify-items: start;
+}
+
+.sample-report-actions p {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 1024px) {
+  .process-grid,
+  .case-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .process-grid,
+  .case-grid,
+  .identity-grid,
+  .profile-selector,
+  .whatif-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .sample-report-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   body::before {
     display: none;
