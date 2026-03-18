@@ -789,11 +789,113 @@
       </div>
     </section>
 
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">How We Work</p>
+          <h2>A clear 5-step process built for disciplined trading decisions.</h2>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-card reveal">
+            <span class="process-step">Step 1</span>
+            <h3>Risk Profiling</h3>
+            <p>We map your capital, experience level, and drawdown tolerance before discussing any setup.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 2</span>
+            <h3>Market Structure Analysis</h3>
+            <p>Trend, volatility, and key levels are aligned to define a valid market context.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 3</span>
+            <h3>Strategy Mapping</h3>
+            <p>We match the setup style to your profile: breakout, hedge, options structure, or range-play.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 4</span>
+            <h3>Execution Plan</h3>
+            <p>Every trade has defined entry, invalidation, size, and risk-to-reward before execution.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 5</span>
+            <h3>Review and Improve</h3>
+            <p>Post-trade journaling and periodic review keep behavior consistent over the long run.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="consultation">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Client-fit Consultation</p>
+          <h2>Choose your trading profile and get a tailored action plan preview.</h2>
+        </div>
+
+        <div class="consultation-shell reveal">
+          <div class="profile-selector" id="profileSelector" role="tablist" aria-label="Choose trading profile">
+            <button type="button" class="profile-option is-active" data-profile="beginner" role="tab" aria-selected="true">Beginner</button>
+            <button type="button" class="profile-option" data-profile="active" role="tab" aria-selected="false">Active Trader</button>
+            <button type="button" class="profile-option" data-profile="options" role="tab" aria-selected="false">Options Seller</button>
+          </div>
+
+          <article class="consultation-plan" id="consultationPlanOutput" aria-live="polite">
+            <h3>Beginner Plan</h3>
+            <p>Primary focus: capital protection, clean risk habits, and process-first execution.</p>
+            <ul>
+              <li>Recommended style: limited-frequency index setups</li>
+              <li>Risk model: 0.5% to 1.0% per trade</li>
+              <li>First 7-day plan: checklist discipline + stop-loss consistency</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="case-studies">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Client Case Studies</p>
+          <h2>Real transformation examples focused on behavior and risk control.</h2>
+        </div>
+
+        <div class="case-grid">
+          <article class="case-card reveal">
+            <span class="case-chip">Case A</span>
+            <h3>Overtrading to Structured Execution</h3>
+            <p><strong>Problem:</strong> Frequent impulsive entries and inconsistent stop placement.</p>
+            <p><strong>Intervention:</strong> Pre-trade checklist, max trades/day cap, and strict SL framework.</p>
+            <p><strong>Outcome:</strong> Plan adherence improved from 42% to 78% in 6 weeks.</p>
+          </article>
+          <article class="case-card reveal">
+            <span class="case-chip">Case B</span>
+            <h3>Portfolio Noise to Risk-Aligned Allocation</h3>
+            <p><strong>Problem:</strong> Random position sizing across unrelated setups.</p>
+            <p><strong>Intervention:</strong> Uniform risk-per-trade model and scenario-based hedge plan.</p>
+            <p><strong>Outcome:</strong> Drawdown volatility reduced while decision quality improved.</p>
+          </article>
+          <article class="case-card reveal">
+            <span class="case-chip">Case C</span>
+            <h3>Option Selling Without Structure to Managed Premium Approach</h3>
+            <p><strong>Problem:</strong> Naked exposure during event-driven sessions.</p>
+            <p><strong>Intervention:</strong> Defined risk spreads with event-window position control.</p>
+            <p><strong>Outcome:</strong> Better consistency in risk behavior across volatile weeks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="market">
       <div class="container market-layout">
         <div class="section-heading reveal">
           <p class="eyebrow">Market Desk</p>
           <h2>Track the market backdrop before making your next decision.</h2>
+        </div>
+
+        <div class="session-mode-strip reveal" id="sessionModeStrip" aria-live="polite">
+          <span class="session-mode-chip" id="marketModeChip">Session Mode: Pre-open</span>
+          <p id="marketModeFocus">Focus: opening levels, event risk, and directional confirmation checklist.</p>
         </div>
 
         <div class="market-grid">
@@ -1050,11 +1152,66 @@
 
             <button class="btn btn-secondary rr-calc-btn" type="button" id="positionCalculateBtn">Calculate Quantity</button>
 
+            <div class="whatif-panel" aria-label="What if risk scenarios">
+              <span>What-if Scenarios</span>
+              <div class="whatif-actions">
+                <button class="whatif-btn" type="button" data-risk-profile="conservative">Conservative</button>
+                <button class="whatif-btn" type="button" data-risk-profile="balanced">Balanced</button>
+                <button class="whatif-btn" type="button" data-risk-profile="aggressive">Aggressive</button>
+              </div>
+              <small id="whatIfSummary">Pick a profile to auto-fill risk % and stop-distance assumptions.</small>
+            </div>
+
             <div class="rr-output" id="positionOutput" aria-live="polite">
               <p>Set capital, risk, and stop distance to derive size.</p>
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="risk-identity">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Risk-first Identity</p>
+          <h2>What we do and what we never do.</h2>
+        </div>
+
+        <div class="identity-grid">
+          <article class="identity-card do reveal">
+            <h3><i class="bi bi-check2-circle"></i> What We Do</h3>
+            <ul>
+              <li>Structured market analysis with scenario planning</li>
+              <li>Risk-defined execution framework before entry</li>
+              <li>Behavior-focused review and process improvement</li>
+            </ul>
+          </article>
+
+          <article class="identity-card dont reveal">
+            <h3><i class="bi bi-slash-circle"></i> What We Do Not Do</h3>
+            <ul>
+              <li>No guaranteed return claims</li>
+              <li>No blind tips without risk context</li>
+              <li>No over-leverage or revenge-trading guidance</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sample-report-section" id="sample-report">
+      <div class="container">
+        <article class="sample-report-card reveal">
+          <div>
+            <p class="eyebrow">Client Deliverable Preview</p>
+            <h2>Download a sample weekly market plan.</h2>
+            <p>Show clients exactly how your structured analysis is delivered: bias, levels, risk zones, and invalidation plan.</p>
+          </div>
+          <div class="sample-report-actions">
+            <button type="button" class="btn btn-primary" id="downloadSampleReportBtn">Download Sample Report</button>
+            <p id="sampleReportStatus" aria-live="polite">Instant download. No signup required.</p>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -1142,7 +1299,7 @@
         <p>Professional trading guidance for informed and disciplined market participation.</p>
       </div>
       <div class="footer-links">
-        <a href="https://www.linkedin.com" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/ashutosh-srivastava-3789653b6/" target="_blank" rel="noreferrer noopener">LinkedIn</a>
         <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener">Instagram</a>
         <a href="https://x.com" target="_blank" rel="noreferrer noopener">X</a>
       </div>
@@ -1150,6 +1307,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20260315-niftyfix2"></script>
+  <script src="script.js?v=20260319-clientdemo"></script>
 </body>
 </html>
