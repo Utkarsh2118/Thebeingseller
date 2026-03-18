@@ -451,9 +451,179 @@ const initializeRiskToolkit = () => {
       <p>Per-trade risk model keeps drawdown controlled over a sequence of trades.</p>
     `;
   });
+
+  const riskProfiles = {
+    conservative: {
+      riskPercent: 0.5,
+      slPoints: 90,
+      note: 'Conservative profile loaded: lower risk exposure with wider stop-distance planning.',
+    },
+    balanced: {
+      riskPercent: 1.0,
+      slPoints: 70,
+      note: 'Balanced profile loaded: moderate risk with practical stop-distance assumptions.',
+    },
+    aggressive: {
+      riskPercent: 1.5,
+      slPoints: 50,
+      note: 'Aggressive profile loaded: higher risk per trade with tighter stop control required.',
+    },
+  };
+
+  const whatIfButtons = document.querySelectorAll('.whatif-btn');
+  const whatIfSummary = document.getElementById('whatIfSummary');
+
+  whatIfButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const profile = riskProfiles[button.dataset.riskProfile || ''];
+      if (!profile) {
+        return;
+      }
+
+      if (riskPercentInput) {
+        riskPercentInput.value = String(profile.riskPercent);
+      }
+
+      if (slPointsInput) {
+        slPointsInput.value = String(profile.slPoints);
+      }
+
+      whatIfButtons.forEach((node) => node.classList.toggle('is-active', node === button));
+
+      if (whatIfSummary) {
+        whatIfSummary.textContent = profile.note;
+      }
+
+      positionCalculateBtn.click();
+    });
+  });
 };
 
 initializeRiskToolkit();
+
+const initializeConsultationSelector = () => {
+  const profileSelector = document.getElementById('profileSelector');
+  const planOutput = document.getElementById('consultationPlanOutput');
+
+  if (!profileSelector || !planOutput) {
+    return;
+  }
+
+  const plans = {
+    beginner: {
+      title: 'Beginner Plan',
+      summary: 'Primary focus: capital protection, clean risk habits, and process-first execution.',
+      points: [
+        'Recommended style: limited-frequency index setups',
+        'Risk model: 0.5% to 1.0% per trade',
+        'First 7-day plan: checklist discipline + stop-loss consistency',
+      ],
+    },
+    active: {
+      title: 'Active Trader Plan',
+      summary: 'Primary focus: execution consistency, session planning, and behavior control under volatility.',
+      points: [
+        'Recommended style: level-based intraday structure trades',
+        'Risk model: 0.8% to 1.2% per trade',
+        'First 7-day plan: opening-hour protocol + post-session review loop',
+      ],
+    },
+    options: {
+      title: 'Options Seller Plan',
+      summary: 'Primary focus: premium capture with risk-defined structures and event-window control.',
+      points: [
+        'Recommended style: spread-based options framework',
+        'Risk model: exposure caps with hedge triggers',
+        'First 7-day plan: event-risk map + adjustment checklist',
+      ],
+    },
+  };
+
+  const renderPlan = (key) => {
+    const plan = plans[key] || plans.beginner;
+    planOutput.innerHTML = `
+      <h3>${plan.title}</h3>
+      <p>${plan.summary}</p>
+      <ul>
+        <li>${plan.points[0]}</li>
+        <li>${plan.points[1]}</li>
+        <li>${plan.points[2]}</li>
+      </ul>
+    `;
+  };
+
+  profileSelector.querySelectorAll('.profile-option').forEach((button) => {
+    button.addEventListener('click', () => {
+      const profile = button.dataset.profile || 'beginner';
+
+      profileSelector.querySelectorAll('.profile-option').forEach((node) => {
+        const isActive = node === button;
+        node.classList.toggle('is-active', isActive);
+        node.setAttribute('aria-selected', String(isActive));
+      });
+
+      renderPlan(profile);
+    });
+  });
+};
+
+initializeConsultationSelector();
+
+const initializeSampleReportDownload = () => {
+  const downloadButton = document.getElementById('downloadSampleReportBtn');
+  const sampleReportStatus = document.getElementById('sampleReportStatus');
+
+  if (!downloadButton) {
+    return;
+  }
+
+  downloadButton.addEventListener('click', () => {
+    const now = new Date();
+    const dateLabel = now.toLocaleDateString('en-GB');
+    const reportText = [
+      'THEBEINGSELLER - SAMPLE WEEKLY MARKET PLAN',
+      `Generated: ${dateLabel}`,
+      '',
+      '1) Weekly Bias',
+      '- Primary trend: Neutral-to-bullish',
+      '- Preferred side: Buy-on-dips above key support',
+      '',
+      '2) Key Levels',
+      '- Resistance zone: 22,420 to 22,480',
+      '- Support zone: 22,110 to 22,040',
+      '',
+      '3) Risk Zones',
+      '- High volatility windows: Opening 45 minutes, major macro events',
+      '- Reduce size during event spikes',
+      '',
+      '4) Setup Watchlist',
+      '- Breakout continuation with volume confirmation',
+      '- Failed breakdown reversal near support',
+      '',
+      '5) Invalidation Plan',
+      '- Exit on structure break below planned invalidation',
+      '- Never average losers beyond risk plan',
+      '',
+      'Disclaimer: Educational planning sample. Not a guaranteed return document.',
+    ].join('\n');
+
+    const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
+    const fileUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = fileUrl;
+    anchor.download = `thebeingseller-sample-report-${now.toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(fileUrl);
+
+    if (sampleReportStatus) {
+      sampleReportStatus.textContent = 'Sample report downloaded successfully.';
+    }
+  });
+};
+
+initializeSampleReportDownload();
 
 const initializeContactAssist = () => {
   if (messageInput && messageCounter) {
@@ -590,6 +760,8 @@ const initializeMarketSessionStrip = () => {
         stateClass: 'is-closed',
         label: 'Market Closed (Weekend)',
         note: 'Next session starts Monday at 09:00 IST',
+        mode: 'Weekend Review',
+        focus: 'Review weekly journal, update risk limits, and prepare next-session watchlists.',
         clock,
       };
     }
@@ -599,15 +771,41 @@ const initializeMarketSessionStrip = () => {
         stateClass: 'is-preopen',
         label: 'Pre-open Session Active',
         note: 'Regular trading opens at 09:15 IST',
+        mode: 'Pre-open',
+        focus: 'Track gap cues, opening levels, and event-risk conditions before first execution.',
         clock,
       };
     }
 
-    if (minutes >= 555 && minutes < 930) {
+    if (minutes >= 555 && minutes < 630) {
       return {
         stateClass: 'is-open',
-        label: 'Market Open',
-        note: 'NSE cash market closes at 15:30 IST',
+        label: 'Market Open (Opening Hour)',
+        note: 'High volatility window - prioritize execution discipline',
+        mode: 'Opening Hour',
+        focus: 'Prioritize volatility control, clear invalidation levels, and avoid impulsive entries.',
+        clock,
+      };
+    }
+
+    if (minutes >= 630 && minutes < 870) {
+      return {
+        stateClass: 'is-open',
+        label: 'Market Open (Mid Session)',
+        note: 'Trend confirmation window for cleaner setups',
+        mode: 'Mid Session',
+        focus: 'Focus on trend continuation, level retests, and structured position sizing.',
+        clock,
+      };
+    }
+
+    if (minutes >= 870 && minutes < 930) {
+      return {
+        stateClass: 'is-open',
+        label: 'Market Open (Closing Hour)',
+        note: 'Prepare closing review and next-session plan',
+        mode: 'Closing Hour',
+        focus: 'Reduce late-session overtrading and update next-session watchlist with key levels.',
         clock,
       };
     }
@@ -616,17 +814,31 @@ const initializeMarketSessionStrip = () => {
       stateClass: 'is-closed',
       label: 'Market Closed',
       note: 'Pre-open resumes at 09:00 IST on trading days',
+      mode: 'Post-market Review',
+      focus: 'Review executions, update journal notes, and refine the next-day playbook.',
       clock,
     };
   };
 
   const renderSession = () => {
+    const modeChip = document.getElementById('marketModeChip');
+    const modeFocus = document.getElementById('marketModeFocus');
     const state = getSessionState();
     sessionStrip.classList.remove('is-open', 'is-preopen', 'is-closed');
     sessionStrip.classList.add(state.stateClass);
     sessionLabel.textContent = state.label;
     sessionNote.textContent = state.note;
     sessionClock.textContent = state.clock;
+
+    if (modeChip) {
+      modeChip.textContent = `Session Mode: ${state.mode}`;
+    }
+
+    if (modeFocus) {
+      modeFocus.textContent = `Focus: ${state.focus}`;
+    }
+
+    document.body.setAttribute('data-market-session', state.mode.toLowerCase().replace(/\s+/g, '-'));
   };
 
   renderSession();
