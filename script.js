@@ -709,6 +709,21 @@ const initializeMagneticCtaAndCursorGlow = () => {
 
 initializeMagneticCtaAndCursorGlow();
 
+const THEME_MINIMAL_PRO = 'minimal-pro';
+const THEME_PREMIUM_LIGHT = 'premium-light';
+
+const normalizeTheme = (value) => {
+  if (value === 'light') {
+    return THEME_PREMIUM_LIGHT;
+  }
+
+  if (value === 'dark') {
+    return THEME_MINIMAL_PRO;
+  }
+
+  return value === THEME_PREMIUM_LIGHT ? THEME_PREMIUM_LIGHT : THEME_MINIMAL_PRO;
+};
+
 const getCurrentTheme = () => (document.body.classList.contains('light-theme') ? 'light' : 'dark');
 
 const updateThemeColor = () => {
@@ -716,7 +731,7 @@ const updateThemeColor = () => {
     return;
   }
 
-  themeColorMeta.setAttribute('content', getCurrentTheme() === 'light' ? '#f8f9fa' : '#07111d');
+  themeColorMeta.setAttribute('content', getCurrentTheme() === 'light' ? '#f6f3eb' : '#06101c');
 };
 
 const initializeMarketSessionStrip = () => {
@@ -847,6 +862,93 @@ const initializeMarketSessionStrip = () => {
 
 initializeMarketSessionStrip();
 
+const initializeMarketMoodThermometer = () => {
+  const gauge = document.getElementById('marketMoodGauge');
+  const valueNode = document.getElementById('marketMoodValue');
+  const zoneNode = document.getElementById('marketMoodZone');
+  const titleNode = document.getElementById('marketMoodTitle');
+  const guidanceNode = document.getElementById('marketMoodGuidance');
+  const stanceNode = document.getElementById('marketMoodStance');
+  const riskNode = document.getElementById('marketMoodRisk');
+  const markerNode = document.getElementById('marketMoodMarker');
+
+  if (!gauge || !valueNode || !zoneNode || !titleNode || !guidanceNode || !stanceNode || !riskNode || !markerNode) {
+    return;
+  }
+
+  const moodSnapshots = [
+    {
+      score: 76,
+      zoneLabel: 'Green Zone',
+      zoneClass: 'mood-zone-safe',
+      title: 'High Confidence Tape',
+      guidance: 'Trend quality is favorable. Trade only validated pullbacks with defined invalidation.',
+      stance: 'Trend continuation setups',
+      risk: 'Normal sizing is allowed, but keep hard stops in place.',
+      color: '#1fb89f',
+    },
+    {
+      score: 62,
+      zoneLabel: 'Caution Zone',
+      zoneClass: 'mood-zone-caution',
+      title: 'Balanced Confidence',
+      guidance: 'Momentum is tradable but selective. Wait for clean confirmations and avoid forcing setups.',
+      stance: 'Selective long or mean-reversion entries',
+      risk: 'Keep per-trade risk capped near 1%.',
+      color: '#d5ae5a',
+    },
+    {
+      score: 34,
+      zoneLabel: 'Protection Zone',
+      zoneClass: 'mood-zone-protect',
+      title: 'Low Conviction Market',
+      guidance: 'Conditions are noisy. Prioritize capital defense over trade frequency.',
+      stance: 'No-trade or micro-size only',
+      risk: 'Reduce exposure and skip marginal setups.',
+      color: '#ff7a7a',
+    },
+    {
+      score: 69,
+      zoneLabel: 'Caution Zone',
+      zoneClass: 'mood-zone-caution',
+      title: 'Watchlist-Driven Session',
+      guidance: 'Setup quality can improve around key levels. Execute only A-grade structures.',
+      stance: 'Event-aligned intraday entries',
+      risk: 'Hold size moderate and avoid revenge trades.',
+      color: '#d5ae5a',
+    },
+  ];
+
+  let activeMoodIndex = 0;
+
+  const renderMood = (snapshot) => {
+    const boundedScore = Math.max(0, Math.min(100, snapshot.score));
+    valueNode.textContent = String(boundedScore);
+    titleNode.textContent = snapshot.title;
+    guidanceNode.textContent = snapshot.guidance;
+    stanceNode.textContent = snapshot.stance;
+    riskNode.textContent = snapshot.risk;
+    zoneNode.textContent = snapshot.zoneLabel;
+
+    zoneNode.classList.remove('mood-zone-safe', 'mood-zone-caution', 'mood-zone-protect');
+    zoneNode.classList.add(snapshot.zoneClass);
+
+    gauge.style.setProperty('--mood-score', String(boundedScore));
+    gauge.style.setProperty('--mood-color', snapshot.color);
+    markerNode.style.left = `${boundedScore}%`;
+    gauge.setAttribute('aria-label', `Market confidence score ${boundedScore} out of 100`);
+  };
+
+  renderMood(moodSnapshots[activeMoodIndex]);
+
+  window.setInterval(() => {
+    activeMoodIndex = (activeMoodIndex + 1) % moodSnapshots.length;
+    renderMood(moodSnapshots[activeMoodIndex]);
+  }, 6200);
+};
+
+initializeMarketMoodThermometer();
+
 const initializeSentimentMotion = () => {
   const sentimentVisual = document.querySelector('.bull-bear-visual');
   const moodChip = document.getElementById('bbMoodChip');
@@ -888,30 +990,36 @@ const initializeThemeToggle = () => {
   const themeToggle = document.getElementById('themeToggle');
   if (!themeToggle) return;
 
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  if (savedTheme === 'light') {
-    document.body.classList.add('light-theme');
-    themeToggle.innerHTML = '<i class="bi bi-sun-fill"></i>';
-  }
+  const applyTheme = (themeMode) => {
+    const normalizedTheme = normalizeTheme(themeMode);
+    const isPremiumLight = normalizedTheme === THEME_PREMIUM_LIGHT;
 
-  updateThemeColor();
+    document.body.classList.toggle('light-theme', isPremiumLight);
+    document.documentElement.setAttribute('data-theme', normalizedTheme);
 
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-    if (newTheme === 'light') {
-      document.body.classList.add('light-theme');
-      themeToggle.innerHTML = '<i class="bi bi-sun-fill"></i>';
+    if (isPremiumLight) {
+      themeToggle.innerHTML = '<i class="bi bi-brightness-high-fill"></i><span>Premium Light</span>';
+      themeToggle.setAttribute('aria-label', 'Switch to Minimal Pro theme');
+      themeToggle.setAttribute('title', 'Current: Premium Light');
     } else {
-      document.body.classList.remove('light-theme');
-      themeToggle.innerHTML = '<i class="bi bi-moon-stars"></i>';
+      themeToggle.innerHTML = '<i class="bi bi-moon-stars"></i><span>Minimal Pro</span>';
+      themeToggle.setAttribute('aria-label', 'Switch to Premium Light theme');
+      themeToggle.setAttribute('title', 'Current: Minimal Pro');
     }
 
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', normalizedTheme);
     updateThemeColor();
+  };
+
+  const savedTheme = normalizeTheme(localStorage.getItem('theme') || THEME_MINIMAL_PRO);
+  applyTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const nextTheme = document.body.classList.contains('light-theme')
+      ? THEME_MINIMAL_PRO
+      : THEME_PREMIUM_LIGHT;
+
+    applyTheme(nextTheme);
     refreshMarketWidgets();
   });
 };
