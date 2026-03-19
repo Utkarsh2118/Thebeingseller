@@ -30,6 +30,7 @@
   --nav-mob-bg: rgba(8, 18, 30, 0.96);
   --inset-bg: rgba(255, 255, 255, 0.03);
   --inset-bg-hover: rgba(37, 195, 166, 0.08);
+  --hero-parallax-y: 0px;
 }
 
 body.light-theme {
@@ -433,12 +434,26 @@ body.light-theme .page-aura {
   padding: 6rem 0 3rem;
   overflow: hidden;
 }
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -12% -10% auto;
+  height: 44%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 22% 30%, rgba(37, 195, 166, 0.16), transparent 36%),
+    radial-gradient(circle at 72% 40%, rgba(31, 120, 197, 0.2), transparent 38%);
+  opacity: 0.72;
+  animation: heroAuraDrift 13s ease-in-out infinite;
+}
 
 .hero-market-bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: 0.6;
+  transform: translate3d(0, calc(var(--hero-parallax-y) * 0.55), 0);
+  will-change: transform;
 }
 
 .hero-grid-line {
@@ -702,10 +717,37 @@ body.light-theme .page-aura {
 }
 
 .hero-signal-strip article {
+  position: relative;
+  overflow: hidden;
   padding: 0.75rem;
   border-radius: 12px;
   border: 1px solid rgba(120, 164, 208, 0.14);
   background: rgba(255, 255, 255, 0.03);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.hero-signal-strip article::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid rgba(111, 251, 214, 0.46);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.hero-signal-strip article.is-live {
+  transform: translateY(-2px);
+  border-color: rgba(111, 251, 214, 0.42);
+  box-shadow: 0 14px 22px rgba(37, 195, 166, 0.14);
+}
+
+.hero-signal-strip article.is-live::after {
+  opacity: 1;
+  transform: scale(1);
+  animation: liveSignalPulse 1.6s ease-in-out;
 }
 
 .hero-signal-strip span {
@@ -737,6 +779,26 @@ body.light-theme .page-aura {
 
 .hero-panel {
   padding: 1.4rem;
+  position: relative;
+  transform: perspective(1100px) rotateX(var(--hero-panel-tilt-x, 0deg)) rotateY(var(--hero-panel-tilt-y, 0deg)) translate3d(0, var(--hero-panel-lift, 0px), 0);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 38%);
+  opacity: 0;
+  transition: opacity 0.24s ease;
+  pointer-events: none;
+}
+
+.hero-panel:hover::after {
+  opacity: 1;
 }
 
 .panel-top,
@@ -1097,6 +1159,30 @@ body.light-theme .page-aura {
   }
 }
 
+@keyframes heroAuraDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.58;
+  }
+  50% {
+    transform: translate3d(0, 12px, 0) scale(1.06);
+    opacity: 0.82;
+  }
+}
+
+@keyframes liveSignalPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(111, 251, 214, 0.24);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(111, 251, 214, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(111, 251, 214, 0);
+  }
+}
+
 @keyframes arrowRise {
   0%,
   100% {
@@ -1186,6 +1272,8 @@ body.light-theme .page-aura {
 }
 
 .about-profile-card {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.2fr);
   gap: 1.5rem;
@@ -1195,6 +1283,29 @@ body.light-theme .page-aura {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.about-profile-card::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 40%;
+  left: -50%;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(111, 251, 214, 0), rgba(111, 251, 214, 0.26), rgba(111, 251, 214, 0));
+  opacity: 0;
+  transform: skewX(-18deg);
+}
+
+.about-profile-card.is-scan-active::before {
+  opacity: 0.95;
+  animation: profileCardSweep 1.35s cubic-bezier(0.22, 0.9, 0.25, 1) both;
+}
+
+.about-profile-card.is-scan-active {
+  border-color: rgba(37, 195, 166, 0.34);
+  box-shadow: 0 30px 64px rgba(0, 0, 0, 0.42);
 }
 
 .about-profile-card:hover {
@@ -1501,6 +1612,18 @@ body.light-theme .page-aura {
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid rgba(111, 251, 214, 0.42);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.26s ease, transform 0.26s ease;
+  pointer-events: none;
+}
+
 .service-card::before {
   content: "";
   position: absolute;
@@ -1520,6 +1643,28 @@ body.light-theme .page-aura {
 
 .service-card:hover::before {
   opacity: 1;
+}
+
+.service-card.is-spotlight {
+  transform: translateY(-7px);
+  border-color: rgba(37, 195, 166, 0.38);
+  box-shadow: 0 24px 42px rgba(0, 0, 0, 0.28);
+  background: linear-gradient(160deg, var(--card-hover-from), var(--card-hover-to));
+}
+
+.service-card.is-spotlight::before {
+  opacity: 1;
+}
+
+.service-card.is-spotlight::after {
+  opacity: 1;
+  transform: scale(1);
+  animation: serviceSpotlightPulse 1.8s ease-in-out;
+}
+
+.service-card.is-spotlight i {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 24px rgba(37, 195, 166, 0.18);
 }
 
 .service-card i {
@@ -1908,6 +2053,27 @@ body.light-theme .page-aura {
   letter-spacing: -0.03em;
 }
 
+@keyframes profileCardSweep {
+  0% {
+    left: -48%;
+  }
+  100% {
+    left: 124%;
+  }
+}
+
+@keyframes serviceSpotlightPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(111, 251, 214, 0.24);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(111, 251, 214, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(111, 251, 214, 0);
+  }
+}
+
 @keyframes achievementSweep {
   from {
     transform: translateX(-130%);
@@ -2289,6 +2455,10 @@ body.light-theme .page-aura {
 
   .hero-market-bg {
     opacity: 0.42;
+  }
+
+  .hero-panel {
+    transform: none;
   }
 
   .section {
@@ -3766,5 +3936,30 @@ body.light-theme .mood-meta p {
 
   .is-magnetic {
     transform: none !important;
+  }
+
+  .hero::before,
+  .hero-price-path,
+  .hero-price-node,
+  .hero-signal-strip article.is-live::after {
+    animation: none !important;
+  }
+
+  .hero-market-bg,
+  .hero-panel,
+  .hero-signal-strip article {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .about-profile-card::before,
+  .service-card.is-spotlight::after {
+    animation: none !important;
+  }
+
+  .about-profile-card,
+  .service-card {
+    transform: none !important;
+    transition: none !important;
   }
 }
