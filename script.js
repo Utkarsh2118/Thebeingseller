@@ -1428,3 +1428,211 @@ const initializeAnimatedBars = () => {
 };
 
 initializeAnimatedBars();
+
+const initializeMindBlowingMotion = () => {
+  const heroSection = document.querySelector('.hero');
+  const heroPanel = document.querySelector('.hero-panel');
+  const signalCards = document.querySelectorAll('.hero-signal-strip article');
+  const aboutProfileCard = document.querySelector('.about-profile-card');
+  const servicesGrid = document.querySelector('.services-grid');
+  const serviceCards = Array.from(document.querySelectorAll('.service-card'));
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reducedMotion) {
+    return;
+  }
+
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+  if (heroSection) {
+    let heroInView = true;
+    let parallaxRafId = null;
+
+    const renderHeroParallax = () => {
+      parallaxRafId = null;
+
+      if (!heroInView) {
+        return;
+      }
+
+      const rect = heroSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const normalized = clamp((rect.top + (rect.height * 0.5) - (viewportHeight * 0.5)) / viewportHeight, -1, 1);
+      const offsetY = clamp(normalized * 18, -18, 18);
+
+      document.documentElement.style.setProperty('--hero-parallax-y', `${offsetY.toFixed(2)}px`);
+    };
+
+    const queueHeroParallax = () => {
+      if (parallaxRafId !== null) {
+        return;
+      }
+
+      parallaxRafId = window.requestAnimationFrame(renderHeroParallax);
+    };
+
+    const heroVisibilityObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target !== heroSection) {
+            return;
+          }
+
+          heroInView = entry.isIntersecting;
+
+          if (heroInView) {
+            queueHeroParallax();
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    heroVisibilityObserver.observe(heroSection);
+
+    window.addEventListener('scroll', queueHeroParallax, { passive: true });
+    window.addEventListener('resize', queueHeroParallax, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        queueHeroParallax();
+      }
+    });
+
+    queueHeroParallax();
+  }
+
+  if (heroPanel && window.matchMedia('(pointer: fine)').matches) {
+    let tiltRafId = null;
+    let tiltX = 0;
+    let tiltY = 0;
+    let panelLift = 0;
+
+    const paintTilt = () => {
+      tiltRafId = null;
+      heroPanel.style.setProperty('--hero-panel-tilt-x', `${tiltX.toFixed(2)}deg`);
+      heroPanel.style.setProperty('--hero-panel-tilt-y', `${tiltY.toFixed(2)}deg`);
+      heroPanel.style.setProperty('--hero-panel-lift', `${panelLift.toFixed(2)}px`);
+    };
+
+    const queueTilt = () => {
+      if (tiltRafId !== null) {
+        return;
+      }
+
+      tiltRafId = window.requestAnimationFrame(paintTilt);
+    };
+
+    heroPanel.addEventListener('pointermove', (event) => {
+      const rect = heroPanel.getBoundingClientRect();
+      const halfWidth = rect.width / 2;
+      const halfHeight = rect.height / 2;
+      const offsetX = event.clientX - rect.left - halfWidth;
+      const offsetY = event.clientY - rect.top - halfHeight;
+
+      tiltX = clamp((-offsetY / halfHeight) * 3.2, -3.2, 3.2);
+      tiltY = clamp((offsetX / halfWidth) * 3.2, -3.2, 3.2);
+      panelLift = clamp(-Math.hypot(offsetX, offsetY) * 0.018, -9, -1);
+      queueTilt();
+    });
+
+    const resetTilt = () => {
+      tiltX = 0;
+      tiltY = 0;
+      panelLift = 0;
+      queueTilt();
+    };
+
+    heroPanel.addEventListener('pointerleave', resetTilt);
+    heroPanel.addEventListener('blur', resetTilt);
+  }
+
+  if (signalCards.length) {
+    let activeCardIndex = 0;
+
+    const paintActiveSignal = (index) => {
+      signalCards.forEach((card, cardIndex) => {
+        card.classList.toggle('is-live', cardIndex === index);
+      });
+    };
+
+    paintActiveSignal(activeCardIndex);
+
+    const rotateSignals = () => {
+      if (document.hidden) {
+        return;
+      }
+
+      activeCardIndex = (activeCardIndex + 1) % signalCards.length;
+      paintActiveSignal(activeCardIndex);
+    };
+
+    window.setInterval(rotateSignals, 2600);
+  }
+
+  if (aboutProfileCard) {
+    const aboutCardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target !== aboutProfileCard) {
+            return;
+          }
+
+          aboutProfileCard.classList.toggle('is-scan-active', entry.isIntersecting);
+        });
+      },
+      { threshold: 0.32 }
+    );
+
+    aboutCardObserver.observe(aboutProfileCard);
+  }
+
+  if (serviceCards.length) {
+    let spotlightIndex = 0;
+    let servicesInView = true;
+
+    const paintServiceSpotlight = (index) => {
+      serviceCards.forEach((card, cardIndex) => {
+        card.classList.toggle('is-spotlight', cardIndex === index);
+      });
+    };
+
+    const rotateServiceSpotlight = () => {
+      if (document.hidden || !servicesInView) {
+        return;
+      }
+
+      spotlightIndex = (spotlightIndex + 1) % serviceCards.length;
+      paintServiceSpotlight(spotlightIndex);
+    };
+
+    paintServiceSpotlight(spotlightIndex);
+
+    if (servicesGrid) {
+      const servicesObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.target !== servicesGrid) {
+              return;
+            }
+
+            servicesInView = entry.isIntersecting;
+          });
+        },
+        { threshold: 0.2 }
+      );
+
+      servicesObserver.observe(servicesGrid);
+    }
+
+    serviceCards.forEach((card, cardIndex) => {
+      card.addEventListener('mouseenter', () => {
+        spotlightIndex = cardIndex;
+        paintServiceSpotlight(spotlightIndex);
+      });
+    });
+
+    window.setInterval(rotateServiceSpotlight, 2300);
+  }
+};
+
+initializeMindBlowingMotion();
