@@ -58,6 +58,7 @@ const testimonialPrev = document.getElementById('testimonialPrev');
 const testimonialNext = document.getElementById('testimonialNext');
 const rrCalculateBtn = document.getElementById('rrCalculateBtn');
 const positionCalculateBtn = document.getElementById('positionCalculateBtn');
+const whatIfSimulateBtn = document.getElementById('whatIfSimulateBtn');
 const heroSignalConfidence = document.getElementById('heroSignalConfidence');
 const heroSignalVolatility = document.getElementById('heroSignalVolatility');
 const heroSignalWindow = document.getElementById('heroSignalWindow');
@@ -557,6 +558,56 @@ const initializeRiskToolkit = () => {
 
   const whatIfButtons = document.querySelectorAll('.whatif-btn');
   const whatIfSummary = document.getElementById('whatIfSummary');
+  const simOptionType = document.getElementById('simOptionType');
+  const simStrikePrice = document.getElementById('simStrikePrice');
+  const simPremiumReceived = document.getElementById('simPremiumReceived');
+  const simStopLossPremium = document.getElementById('simStopLossPremium');
+  const simTargetPremium = document.getElementById('simTargetPremium');
+  const simLotSize = document.getElementById('simLotSize');
+  const simCapital = document.getElementById('simCapital');
+  const simRiskPercent = document.getElementById('simRiskPercent');
+  const whatIfSimOutput = document.getElementById('whatIfSimOutput');
+  const simPresetButtons = document.querySelectorAll('.sim-preset-btn');
+  const simPresetSummary = document.getElementById('simPresetSummary');
+
+  const simulatorPresets = {
+    'bnf-call': {
+      label: 'BankNifty Weekly CE Sell',
+      optionType: 'call',
+      strike: 49500,
+      premium: 210,
+      stopPremium: 320,
+      targetPremium: 110,
+      lotSize: 30,
+      capital: 600000,
+      riskPercent: 1,
+      note: 'OTM call sell idea with controlled premium stop and decay-based target.',
+    },
+    'bnf-put': {
+      label: 'BankNifty Weekly PE Sell',
+      optionType: 'put',
+      strike: 48500,
+      premium: 195,
+      stopPremium: 295,
+      targetPremium: 95,
+      lotSize: 30,
+      capital: 600000,
+      riskPercent: 1,
+      note: 'OTM put sell sample with risk-defined SL and disciplined target exit.',
+    },
+    'nifty-ic': {
+      label: 'Nifty Iron Condor Side',
+      optionType: 'call',
+      strike: 22600,
+      premium: 105,
+      stopPremium: 160,
+      targetPremium: 55,
+      lotSize: 75,
+      capital: 500000,
+      riskPercent: 0.8,
+      note: 'Single-side condor leg simulation to estimate risk load before full structure.',
+    },
+  };
 
   whatIfButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -580,6 +631,105 @@ const initializeRiskToolkit = () => {
       }
 
       positionCalculateBtn.click();
+    });
+  });
+
+  if (whatIfSimulateBtn && whatIfSimOutput) {
+    whatIfSimulateBtn.addEventListener('click', () => {
+      const optionType = simOptionType?.value || 'call';
+      const strike = Number(simStrikePrice?.value || 0);
+      const premium = Number(simPremiumReceived?.value || 0);
+      const stopPremium = Number(simStopLossPremium?.value || 0);
+      const targetPremium = Number(simTargetPremium?.value || 0);
+      const lotSize = Number(simLotSize?.value || 0);
+      const capital = Number(simCapital?.value || 0);
+      const riskPercent = Number(simRiskPercent?.value || 0);
+
+      if (!(strike > 0) || !(premium > 0) || !(stopPremium > 0) || !(targetPremium > 0) || !(lotSize > 0)) {
+        whatIfSimOutput.innerHTML = '<p>Please enter valid positive values for strike, premium, stop, target, and lot size.</p>';
+        return;
+      }
+
+      if (stopPremium <= premium) {
+        whatIfSimOutput.innerHTML = '<p>Stop-loss premium should be above premium received for a short premium trade.</p>';
+        return;
+      }
+
+      if (targetPremium >= premium) {
+        whatIfSimOutput.innerHTML = '<p>Target exit premium should be below premium received to model a profitable decay exit.</p>';
+        return;
+      }
+
+      const riskPerLot = (stopPremium - premium) * lotSize;
+      const rewardPerLot = (premium - targetPremium) * lotSize;
+      const breakEven = optionType === 'call' ? strike + premium : strike - premium;
+      const rrRatio = rewardPerLot / riskPerLot;
+      const maxRiskAmount = capital > 0 && riskPercent > 0 ? (capital * riskPercent) / 100 : 0;
+      const suggestedLots = maxRiskAmount > 0 ? Math.floor(maxRiskAmount / riskPerLot) : 0;
+      const ratioLabel = rrRatio >= 2 ? 'good' : rrRatio >= 1.3 ? 'ok' : 'risky';
+      const outlook = rrRatio >= 2 ? 'Favorable' : rrRatio >= 1.3 ? 'Tradable' : 'High-Risk';
+
+      whatIfSimOutput.innerHTML = `
+        <strong>${optionType === 'call' ? 'Short Call' : 'Short Put'} Simulation: ${outlook}</strong>
+        <p>Break-even level: <strong>${breakEven.toFixed(2)}</strong> | Planned R:R: <strong>1 : ${rrRatio.toFixed(2)}</strong></p>
+        <span class="rr-chip ${ratioLabel}">${outlook} Scenario</span>
+        <div class="sim-metrics">
+          <span>Planned max loss per lot: <strong>${formatInr(riskPerLot)}</strong></span>
+          <span>Planned reward per lot: <strong>${formatInr(rewardPerLot)}</strong></span>
+          <span>Risk budget per trade: <strong>${formatInr(maxRiskAmount)}</strong></span>
+          <span>Suggested lots: <strong>${suggestedLots.toLocaleString('en-IN')}</strong></span>
+        </div>
+      `;
+    });
+  }
+
+  simPresetButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const preset = simulatorPresets[button.dataset.simPreset || ''];
+
+      if (!preset) {
+        return;
+      }
+
+      if (simOptionType) {
+        simOptionType.value = preset.optionType;
+      }
+
+      if (simStrikePrice) {
+        simStrikePrice.value = String(preset.strike);
+      }
+
+      if (simPremiumReceived) {
+        simPremiumReceived.value = String(preset.premium);
+      }
+
+      if (simStopLossPremium) {
+        simStopLossPremium.value = String(preset.stopPremium);
+      }
+
+      if (simTargetPremium) {
+        simTargetPremium.value = String(preset.targetPremium);
+      }
+
+      if (simLotSize) {
+        simLotSize.value = String(preset.lotSize);
+      }
+
+      if (simCapital) {
+        simCapital.value = String(preset.capital);
+      }
+
+      if (simRiskPercent) {
+        simRiskPercent.value = String(preset.riskPercent);
+      }
+
+      simPresetButtons.forEach((node) => node.classList.toggle('is-active', node === button));
+
+      if (simPresetSummary) {
+        simPresetSummary.textContent = `${preset.label} loaded: ${preset.note}`;
+      }
+
+      whatIfSimulateBtn?.click();
     });
   });
 };
@@ -824,6 +974,8 @@ const initializeMarketSessionStrip = () => {
   const sessionLabel = document.getElementById('sessionLabel');
   const sessionNote = document.getElementById('sessionNote');
   const sessionClock = document.getElementById('sessionClock');
+  const sessionPersona = document.getElementById('sessionPersona');
+  const heroSessionPersona = document.getElementById('heroSessionPersona');
 
   if (!sessionStrip || !sessionLabel || !sessionNote || !sessionClock) {
     return;
@@ -862,6 +1014,8 @@ const initializeMarketSessionStrip = () => {
         note: 'Next session starts Monday at 09:00 IST',
         mode: 'Weekend Review',
         focus: 'Review weekly journal, update risk limits, and prepare next-session watchlists.',
+        persona: 'Desk Tone: Deep review mode, no forced action.',
+        heroPersona: 'Session Personality: Journal review, thesis refinement, and calm planning.',
         clock,
       };
     }
@@ -873,6 +1027,8 @@ const initializeMarketSessionStrip = () => {
         note: 'Regular trading opens at 09:15 IST',
         mode: 'Pre-open',
         focus: 'Track gap cues, opening levels, and event-risk conditions before first execution.',
+        persona: 'Desk Tone: Alert and selective, waiting for opening structure.',
+        heroPersona: 'Session Personality: Prepare levels, define invalidation, then execute with patience.',
         clock,
       };
     }
@@ -884,6 +1040,8 @@ const initializeMarketSessionStrip = () => {
         note: 'High volatility window - prioritize execution discipline',
         mode: 'Opening Hour',
         focus: 'Prioritize volatility control, clear invalidation levels, and avoid impulsive entries.',
+        persona: 'Desk Tone: Fast and disciplined, only A+ setups.',
+        heroPersona: 'Session Personality: High-energy tape, strict stops, zero impulsive trades.',
         clock,
       };
     }
@@ -895,6 +1053,8 @@ const initializeMarketSessionStrip = () => {
         note: 'Trend confirmation window for cleaner setups',
         mode: 'Mid Session',
         focus: 'Focus on trend continuation, level retests, and structured position sizing.',
+        persona: 'Desk Tone: Structured execution with trend-following patience.',
+        heroPersona: 'Session Personality: Smooth pace, selective continuation and pullback entries.',
         clock,
       };
     }
@@ -906,6 +1066,8 @@ const initializeMarketSessionStrip = () => {
         note: 'Prepare closing review and next-session plan',
         mode: 'Closing Hour',
         focus: 'Reduce late-session overtrading and update next-session watchlist with key levels.',
+        persona: 'Desk Tone: Defensive closeout, protect gains first.',
+        heroPersona: 'Session Personality: Capital protection and clean end-of-day execution.',
         clock,
       };
     }
@@ -916,6 +1078,8 @@ const initializeMarketSessionStrip = () => {
       note: 'Pre-open resumes at 09:00 IST on trading days',
       mode: 'Post-market Review',
       focus: 'Review executions, update journal notes, and refine the next-day playbook.',
+      persona: 'Desk Tone: Reflection mode with planning bias.',
+      heroPersona: 'Session Personality: Analyze mistakes, lock lessons, and prep tomorrow.',
       clock,
     };
   };
@@ -936,6 +1100,14 @@ const initializeMarketSessionStrip = () => {
 
     if (modeFocus) {
       modeFocus.textContent = `Focus: ${state.focus}`;
+    }
+
+    if (sessionPersona) {
+      sessionPersona.textContent = state.persona;
+    }
+
+    if (heroSessionPersona) {
+      heroSessionPersona.textContent = state.heroPersona;
     }
 
     document.body.setAttribute('data-market-session', state.mode.toLowerCase().replace(/\s+/g, '-'));
@@ -1381,6 +1553,266 @@ if (contactForm) {
     }
   });
 }
+
+const initializeTemporaryFeedbackForm = () => {
+  const widget = document.getElementById('tempFeedbackWidget');
+  const form = document.getElementById('tempFeedbackForm');
+  const closeBtn = document.getElementById('tempFeedbackClose');
+  const laterBtn = document.getElementById('tempFeedbackLater');
+  const submitBtn = document.getElementById('tempFeedbackSubmit');
+  const statusNode = document.getElementById('tempFeedbackStatus');
+  const openFeedbackBtn = document.getElementById('openFeedbackBtn');
+
+  if (!widget || !form || !submitBtn || !statusNode) {
+    return;
+  }
+
+  const FEEDBACK_CAMPAIGN_END_ISO = '2026-04-10T23:59:59+05:30';
+  const FEEDBACK_DISMISS_KEY = 'ts_temp_feedback_dismissed_v1';
+  const FEEDBACK_SUBMITTED_KEY = 'ts_temp_feedback_submitted_v1';
+  const MIN_FEEDBACK_ENGAGEMENT_MS = 15000;
+
+  const isExpired = Date.now() > new Date(FEEDBACK_CAMPAIGN_END_ISO).getTime();
+  const isDismissed = localStorage.getItem(FEEDBACK_DISMISS_KEY) === '1';
+  const isSubmitted = localStorage.getItem(FEEDBACK_SUBMITTED_KEY) === '1';
+
+  if (isExpired) {
+    if (openFeedbackBtn) {
+      openFeedbackBtn.hidden = true;
+    }
+
+    return;
+  }
+
+  if (isSubmitted && openFeedbackBtn) {
+    openFeedbackBtn.disabled = true;
+    openFeedbackBtn.classList.add('is-disabled');
+    openFeedbackBtn.textContent = 'Feedback Submitted';
+  }
+
+  let isSubmitting = false;
+  let hasOpened = false;
+  let hasVisitedPageEnd = false;
+  let hasMinimumEngagement = false;
+
+  const phonePattern = /^[+]?[(]?[0-9\s-]{8,20}$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const openWidgetIfEligible = () => {
+    if (hasOpened || !hasVisitedPageEnd || !hasMinimumEngagement) {
+      return;
+    }
+
+    hasOpened = true;
+    widget.classList.add('is-open');
+  };
+
+  const setStatus = (message, type) => {
+    statusNode.textContent = message;
+    statusNode.classList.remove('is-error', 'is-success');
+
+    if (type === 'error') {
+      statusNode.classList.add('is-error');
+    }
+
+    if (type === 'success') {
+      statusNode.classList.add('is-success');
+    }
+  };
+
+  const openWidget = () => {
+    widget.classList.add('is-open');
+  };
+
+  const hideWidget = (remember = false) => {
+    widget.classList.remove('is-open');
+
+    if (remember) {
+      localStorage.setItem(FEEDBACK_DISMISS_KEY, '1');
+    }
+  };
+
+  const markVisitedPageEnd = () => {
+    hasVisitedPageEnd = true;
+    openWidgetIfEligible();
+  };
+
+  if (!isDismissed && !isSubmitted) {
+    window.setTimeout(() => {
+      hasMinimumEngagement = true;
+      openWidgetIfEligible();
+    }, MIN_FEEDBACK_ENGAGEMENT_MS);
+
+    const footer = document.querySelector('.site-footer');
+
+    if (footer && 'IntersectionObserver' in window) {
+      const footerObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            markVisitedPageEnd();
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.28,
+        }
+      );
+
+      footerObserver.observe(footer);
+    }
+
+    const scrollFallback = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      if (pageHeight <= 0) {
+        return;
+      }
+
+      const progress = (scrollTop / pageHeight) * 100;
+
+      if (progress >= 88) {
+        markVisitedPageEnd();
+        window.removeEventListener('scroll', scrollFallback);
+      }
+    };
+
+    window.addEventListener('scroll', scrollFallback, { passive: true });
+  }
+
+  openFeedbackBtn?.addEventListener('click', () => {
+    if (openFeedbackBtn.disabled) {
+      return;
+    }
+
+    hasOpened = true;
+    openWidget();
+  });
+
+  closeBtn?.addEventListener('click', () => hideWidget(true));
+  laterBtn?.addEventListener('click', () => hideWidget(true));
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    const name = String(document.getElementById('tempFeedbackName')?.value || '').trim();
+    const email = String(document.getElementById('tempFeedbackEmail')?.value || '').trim();
+    const phone = String(document.getElementById('tempFeedbackPhone')?.value || '').trim();
+    const rating = String(document.getElementById('tempFeedbackRating')?.value || '').trim();
+    const feedbackText = String(document.getElementById('tempFeedbackMessage')?.value || '').trim();
+
+    if (name.length < 2) {
+      setStatus('Please enter your full name.', 'error');
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      setStatus('Please enter a valid email address.', 'error');
+      return;
+    }
+
+    if (!phonePattern.test(phone)) {
+      setStatus('Please enter a valid phone number.', 'error');
+      return;
+    }
+
+    if (!rating) {
+      setStatus('Please select your experience rating.', 'error');
+      return;
+    }
+
+    if (feedbackText.length < 10) {
+      setStatus('Please add feedback with at least 10 characters.', 'error');
+      return;
+    }
+
+    const payload = {
+      name,
+      email,
+      phone,
+      message: `[Temporary Website Feedback]\nRating: ${rating}\nFeedback: ${feedbackText}`,
+    };
+
+    let timeoutId;
+
+    try {
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      setStatus('', 'success');
+
+      const controller = new AbortController();
+      timeoutId = window.setTimeout(() => {
+        controller.abort();
+      }, REQUEST_TIMEOUT_MS);
+
+      const response = await fetch(`${apiBaseUrl}/api/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+
+      const responseText = await response.text();
+      let result = {};
+
+      if (responseText) {
+        try {
+          result = JSON.parse(responseText);
+        } catch (_error) {
+          result = {
+            message: responseText,
+          };
+        }
+      }
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Unable to submit feedback right now.');
+      }
+
+      setStatus('Thanks for your feedback. This helps us improve quickly.', 'success');
+      localStorage.setItem(FEEDBACK_SUBMITTED_KEY, '1');
+
+      if (openFeedbackBtn) {
+        openFeedbackBtn.disabled = true;
+        openFeedbackBtn.classList.add('is-disabled');
+        openFeedbackBtn.textContent = 'Feedback Submitted';
+      }
+
+      window.setTimeout(() => {
+        hideWidget(false);
+      }, 1600);
+      form.reset();
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        setStatus('Server is taking too long. Please retry in a few seconds.', 'error');
+      } else {
+        setStatus(error.message || 'Unable to submit feedback right now.', 'error');
+      }
+    } finally {
+      isSubmitting = false;
+
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Feedback';
+    }
+  });
+};
+
+initializeTemporaryFeedbackForm();
 
 if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
