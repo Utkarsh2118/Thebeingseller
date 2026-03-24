@@ -61,6 +61,7 @@ const positionCalculateBtn = document.getElementById('positionCalculateBtn');
 const heroSignalConfidence = document.getElementById('heroSignalConfidence');
 const heroSignalVolatility = document.getElementById('heroSignalVolatility');
 const heroSignalWindow = document.getElementById('heroSignalWindow');
+const marketStatusBadge = document.getElementById('marketStatusBadge');
 
 const apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? (siteConfig.developmentApiBaseUrl || siteConfig.productionApiBaseUrl)
@@ -68,6 +69,90 @@ const apiBaseUrl = window.location.hostname === 'localhost' || window.location.h
 
 const REQUEST_TIMEOUT_MS = 60000;
 let isContactSubmitting = false;
+
+// Market Status Checker
+const marketHolidays2024_2026 = [
+  '2024-01-26', '2024-03-25', '2024-04-11', '2024-04-17', '2024-04-21', '2024-05-23',
+  '2024-08-15', '2024-08-26', '2024-09-16', '2024-10-02', '2024-10-12', '2024-10-31',
+  '2024-11-01', '2024-11-15', '2024-12-25',
+  '2025-01-26', '2025-03-14', '2025-04-11', '2025-04-18', '2025-05-23', '2025-08-15',
+  '2025-08-29', '2025-10-02', '2025-10-20', '2025-10-29', '2025-11-01', '2025-12-25',
+  '2026-01-15', '2026-01-26', '2026-03-03', '2026-03-26', '2026-03-31', '2026-04-03',
+  '2026-04-14', '2026-05-01', '2026-05-28', '2026-06-26', '2026-09-14', '2026-10-02',
+  '2026-10-20', '2026-11-10', '2026-11-24', '2026-12-25'
+];
+
+const isMarketOpen = () => {
+  // Get current time in IST
+  const now = new Date();
+  const istTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  
+  // Get day of week (0 = Sunday, 6 = Saturday)
+  const dayOfWeek = istTime.getDay();
+  
+  // Check if weekend (Saturday = 6, Sunday = 0)
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    return false;
+  }
+  
+  // Format date as YYYY-MM-DD
+  const year = istTime.getFullYear();
+  const month = String(istTime.getMonth() + 1).padStart(2, '0');
+  const day = String(istTime.getDate()).padStart(2, '0');
+  const dateString = `${year}-${month}-${day}`;
+  
+  // Check if holiday
+  if (marketHolidays2024_2026.includes(dateString)) {
+    return false;
+  }
+  
+  // Check market hours: 9:15 AM to 3:30 PM IST
+  const hours = istTime.getHours();
+  const minutes = istTime.getMinutes();
+  const totalMinutes = hours * 60 + minutes;
+  
+  const openTime = 9 * 60 + 15; // 9:15 AM = 555 minutes
+  const closeTime = 15 * 60 + 30; // 3:30 PM = 930 minutes
+  
+  return totalMinutes >= openTime && totalMinutes < closeTime;
+};
+
+const applyMarketStatus = () => {
+  const marketOpen = isMarketOpen();
+  const body = document.body;
+  const page = document.documentElement;
+  
+  if (marketOpen) {
+    body.classList.add('market-open');
+    page.classList.add('market-open');
+    // Show market live badge
+    if (marketStatusBadge) {
+      marketStatusBadge.classList.add('is-visible');
+      marketStatusBadge.textContent = '📊 Market LIVE';
+    }
+  } else {
+    body.classList.remove('market-open');
+    page.classList.remove('market-open');
+    // Hide market live badge
+    if (marketStatusBadge) {
+      marketStatusBadge.classList.remove('is-visible');
+      marketStatusBadge.textContent = '🔒 Market Closed';
+    }
+  }
+};
+
+// Check market status on load and every minute
+applyMarketStatus();
+window.setInterval(applyMarketStatus, 60000);
+
+// Debug: Test market status (call in console: testMarketStatus())
+window.testMarketStatus = () => {
+  const isOpen = isMarketOpen();
+  console.log('Market Status:', isOpen ? '✅ OPEN' : '❌ CLOSED');
+  console.log('Current time (IST):', new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  console.log('Has market-open class:', document.body.classList.contains('market-open'));
+  console.log('Market status badge status:', marketStatusBadge?.textContent);
+};
 
 const initializePageLoader = () => {
   if (!pageLoader || !loaderBar) {
