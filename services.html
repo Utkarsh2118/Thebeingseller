@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Professional trading business website for market analysis, portfolio consultation, and trading setup guidance."
+  />
+  <meta name="keywords" content="Nifty trader, BankNifty trading, options seller, market analysis, trading consultation, risk management" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Thebeingseller | Professional Trading Solutions" />
+  <meta property="og:description" content="Professional trading guidance focused on disciplined execution, research-based analysis, and risk-managed market participation." />
+  <meta property="og:type" content="website" />
+  <title>Services | Thebeingseller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-analytics.com/v1/script.js"></script>
+  
+  <!-- Vercel Speed Insights -->
+  <script defer src="https://cdn.vercel-analytics.com/v1/speed-insights.js"></script>
+</head>
+<body>
+<div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-shell">
+      <span class="loader-mark">TS</span>
+      <p>Preparing live trading desk...</p>
+      <div class="loader-bar" aria-hidden="true">
+        <span id="loaderBar"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-progress" aria-hidden="true">
+    <span id="scrollProgressBar"></span>
+  </div>
+
+  <div id="marketStatusBadge" aria-live="polite" aria-label="Market status indicator">
+    🔒 Market Closed
+  </div>
+
+  <aside class="temp-feedback-widget" id="tempFeedbackWidget" aria-live="polite" aria-label="Temporary website feedback form">
+    <button class="temp-feedback-close" id="tempFeedbackClose" type="button" aria-label="Close feedback form">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <div class="temp-feedback-head">
+      <span class="temp-feedback-mark" aria-hidden="true"><i class="bi bi-chat-square-heart"></i></span>
+      <div>
+        <p class="temp-feedback-tag">Limited-time feedback</p>
+        <h3>Help us improve this website</h3>
+      </div>
+      <span class="temp-feedback-chip">2 min form</span>
+    </div>
+
+    <p class="temp-feedback-copy">Your quick feedback helps us fine-tune the trading desk experience, readability, and mobile usability.</p>
+
+    <form id="tempFeedbackForm" novalidate>
+      <div class="temp-feedback-grid">
+        <label class="temp-feedback-field" for="tempFeedbackName">
+          <span>Name</span>
+          <input id="tempFeedbackName" name="tempFeedbackName" type="text" placeholder="Your name" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackEmail">
+          <span>Email</span>
+          <input id="tempFeedbackEmail" name="tempFeedbackEmail" type="email" placeholder="you@example.com" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackPhone">
+          <span>Phone</span>
+          <input id="tempFeedbackPhone" name="tempFeedbackPhone" type="tel" placeholder="+91 12345 67890" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackRating">
+          <span>Experience</span>
+          <select id="tempFeedbackRating" name="tempFeedbackRating">
+            <option value="">Select</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Average">Average</option>
+            <option value="Needs Improvement">Needs Improvement</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="temp-feedback-field" for="tempFeedbackMessage">
+        <span>Feedback</span>
+        <textarea id="tempFeedbackMessage" name="tempFeedbackMessage" rows="3" placeholder="What should we improve on this website?"></textarea>
+      </label>
+
+      <div class="temp-feedback-actions">
+        <button class="btn btn-primary temp-feedback-submit" id="tempFeedbackSubmit" type="submit">Submit Feedback</button>
+        <button class="temp-feedback-later" id="tempFeedbackLater" type="button">Maybe later</button>
+      </div>
+
+      <p class="temp-feedback-footnote">This temporary form will auto-hide after the campaign window ends.</p>
+
+      <p class="temp-feedback-status" id="tempFeedbackStatus" role="status" aria-live="polite"></p>
+    </form>
+  </aside>
+
+  <div class="page-aura page-aura-left" aria-hidden="true"></div>
+  <div class="page-aura page-aura-right" aria-hidden="true"></div>
+
+  <header class="site-header" id="home">
+    <nav class="navbar container">
+      <a class="brand" href="index.html" aria-label="Professional Trading Solutions home">
+        <span class="brand-mark">TS</span>
+        <span class="brand-text">
+          <strong>Thebeingseller</strong>
+          <small>Professional, Reliable, and Trustworthy</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="services.html#strategies">Strategies</a>
+        <a href="market.html">Market</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to Premium Light theme" title="Current: Minimal Pro">
+          <i class="bi bi-moon-stars"></i>
+          <span>Minimal Pro</span>
+        </button>
+       <a href="contact.html" class="btn btn-primary">Contact Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+<section class="section" id="services">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Services</p>
+          <h2>Professional support designed around real trading needs.</h2>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <i class="bi bi-graph-up-arrow"></i>
+            <h3>Market Analysis</h3>
+            <p>
+              Structured market breakdowns with levels, trend context, momentum confirmation, and scenario-based planning.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <i class="bi bi-pie-chart"></i>
+            <h3>Portfolio Consultation</h3>
+            <p>
+              Guidance for aligning portfolio decisions with market conditions, risk tolerance, and capital objectives.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <i class="bi bi-sliders2"></i>
+            <h3>Trading Setup Guidance</h3>
+            <p>
+              Actionable help on trade structure, entries, exits, risk control, and the discipline required for consistency.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+<section class="section" id="strategies">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Trading Strategies</p>
+          <h2>Structured approaches built for consistency and capital discipline.</h2>
+        </div>
+        <div class="strategy-grid">
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-lightning-charge"></i>
+            </div>
+            <h3>Breakout Trading</h3>
+            <p>Entering when price decisively breaks above or below a key structure level, confirmed by volume and momentum, with defined risk placement and scenario planning.</p>
+            <ul class="strategy-points">
+              <li>Volume and momentum confirmation</li>
+              <li>Clear invalidation level as stop</li>
+              <li>Defined reward-to-risk before entry</li>
+            </ul>
+          </article>
+
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h3>Options Hedging</h3>
+            <p>Building protective structures using options to limit downside exposure while maintaining market participation on favorable moves.</p>
+            <ul class="strategy-points">
+              <li>Spreads to reduce net premium cost</li>
+              <li>Hedge sizing aligned to portfolio risk</li>
+              <li>Event-driven hedge activation</li>
+            </ul>
+          </article>
+
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-sliders2-vertical"></i>
+            </div>
+            <h3>Risk Management</h3>
+            <p>Structuring every trade with pre-defined capital allocation, stop-loss levels, and scenario planning to protect capital against adverse moves.</p>
+            <ul class="strategy-points">
+              <li>Maximum position size per trade</li>
+              <li>Account-level drawdown limits</li>
+              <li>Scenario-based exit planning</li>
+            </ul>
+          </article>
+
+          <article class="strategy-card reveal">
+            <div class="strategy-icon">
+              <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <h3>Technical Analysis</h3>
+            <p>Reading price structure, candlestick patterns, support and resistance zones, and momentum indicators for high-probability trade decisions.</p>
+            <ul class="strategy-points">
+              <li>Multi-timeframe confluence</li>
+              <li>Support and resistance mapping</li>
+              <li>Momentum and trend alignment</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+<section class="section achievements-section" id="achievements">
+      <div class="container achievements-shell reveal">
+        <div class="section-heading compact">
+          <p class="eyebrow">Achievements</p>
+          <h2>Numbers that communicate experience and trust.</h2>
+        </div>
+
+        <div class="achievements-grid">
+          <article class="achievement-card">
+            <i class="bi bi-award"></i>
+            <strong class="counter" data-target="7" data-suffix="+">0</strong>
+            <span>Years of experience</span>
+            <small>Structured market participation across index and derivatives trading.</small>
+            <div class="achievement-rail" aria-hidden="true"><span class="achievement-fill achievement-fill-1"></span></div>
+          </article>
+          <article class="achievement-card">
+            <i class="bi bi-bar-chart-steps"></i>
+            <strong class="counter" data-target="4200" data-suffix="+">0</strong>
+            <span>Trades executed</span>
+            <small>Experience built through repeatable execution, review, and risk control.</small>
+            <div class="achievement-rail" aria-hidden="true"><span class="achievement-fill achievement-fill-2"></span></div>
+          </article>
+          <article class="achievement-card">
+            <i class="bi bi-people"></i>
+            <strong class="counter" data-target="50" data-suffix="+">0</strong>
+            <span>Clients served</span>
+            <small>Guidance focused on clarity, discipline, and responsible market engagement.</small>
+            <div class="achievement-rail" aria-hidden="true"><span class="achievement-fill achievement-fill-3"></span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+<section class="section performance-section" id="performance">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Performance Insights</p>
+          <h2>Transparent process metrics built on discipline and consistency.</h2>
+        </div>
+        <div class="performance-grid">
+
+          <article class="performance-card reveal">
+            <div class="performance-card-header">
+              <div>
+                <span class="panel-label">Monthly Analysis</span>
+                <h3>Process Review</h3>
+              </div>
+              <i class="bi bi-bar-chart-line performance-card-icon"></i>
+            </div>
+            <div class="perf-monthly-items">
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Structured Trade Reviews</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-1" data-anim-width="82"></div></div>
+                  <span class="perf-bar-value">82%</span>
+                </div>
+              </div>
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Plan Adherence Rate</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-2" data-anim-width="76"></div></div>
+                  <span class="perf-bar-value">76%</span>
+                </div>
+              </div>
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Pre-Trade Analysis Rate</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-3" data-anim-width="91"></div></div>
+                  <span class="perf-bar-value">91%</span>
+                </div>
+              </div>
+              <div class="perf-monthly-item">
+                <span class="perf-monthly-label">Risk Rules Respected</span>
+                <div class="perf-bar-row">
+                  <div class="perf-bar-track"><div class="perf-bar-fill perf-bar-fill-4" data-anim-width="88"></div></div>
+                  <span class="perf-bar-value">88%</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="performance-card reveal">
+            <div class="performance-card-header">
+              <div>
+                <span class="panel-label">Trading Discipline</span>
+                <h3>Behavioral Metrics</h3>
+              </div>
+              <i class="bi bi-shield-check performance-card-icon"></i>
+            </div>
+            <div class="discipline-metrics">
+              <div class="discipline-metric">
+                <div class="discipline-metric-icon"><i class="bi bi-check-circle"></i></div>
+                <div>
+                  <strong>Stop-Loss Discipline</strong>
+                  <p>Consistent application of pre-defined stop levels on every trade, regardless of conviction level.</p>
+                </div>
+              </div>
+              <div class="discipline-metric">
+                <div class="discipline-metric-icon"><i class="bi bi-layers"></i></div>
+                <div>
+                  <strong>Position Sizing Control</strong>
+                  <p>Capital allocation based on setup quality and market volatility, not emotional impulse.</p>
+                </div>
+              </div>
+              <div class="discipline-metric">
+                <div class="discipline-metric-icon"><i class="bi bi-journal-check"></i></div>
+                <div>
+                  <strong>Trade Journaling</strong>
+                  <p>Every significant trade reviewed and documented for patterns and consistent improvement areas.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="performance-card reveal">
+            <div class="performance-card-header">
+              <div>
+                <span class="panel-label">Strategy Effectiveness</span>
+                <h3>Process Indicators</h3>
+              </div>
+              <i class="bi bi-pie-chart performance-card-icon"></i>
+            </div>
+            <div class="strategy-effectiveness">
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-1"></span>
+                  <span>Breakout Setups</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-1" data-anim-width="68"></div></div>
+                  <span class="perf-bar-value">68%</span>
+                </div>
+              </div>
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-2"></span>
+                  <span>Options Structures</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-2" data-anim-width="74"></div></div>
+                  <span class="perf-bar-value">74%</span>
+                </div>
+              </div>
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-3"></span>
+                  <span>Trend Following</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-3" data-anim-width="61"></div></div>
+                  <span class="perf-bar-value">61%</span>
+                </div>
+              </div>
+              <div class="effectiveness-item">
+                <div class="effectiveness-label">
+                  <span class="effectiveness-dot effectiveness-dot-4"></span>
+                  <span>Hedged Positions</span>
+                </div>
+                <div class="effectiveness-bar-row">
+                  <div class="perf-bar-track"><div class="effectiveness-bar-fill effectiveness-bar-fill-4" data-anim-width="79"></div></div>
+                  <span class="perf-bar-value">79%</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+        <p class="perf-disclaimer reveal">
+          <i class="bi bi-info-circle"></i> These metrics reflect process discipline and behavioral consistency, not financial return guarantees. Past patterns do not guarantee future results. All trading carries inherent risk of capital loss.
+        </p>
+      </div>
+    </section>
+<section class="section trust-section" id="testimonials">
+      <div class="container trust-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Trust & Perspective</p>
+          <h2>Built for serious traders who value process, transparency, and responsible market participation.</h2>
+        </div>
+
+        <div class="testimonial-slider reveal" id="testimonialSlider" aria-label="Client testimonials slider">
+          <div class="trust-grid" id="trustGrid">
+            <article class="trust-proof-card is-active" data-slide="0" aria-hidden="false">
+              <span class="trust-badge">Client Perspective</span>
+              <p>
+                “The guidance is practical and calm. The focus stays on setups, risk, and execution discipline rather than noise.”
+              </p>
+              <strong>Active Index Trader</strong>
+            </article>
+
+            <article class="trust-proof-card" data-slide="1" aria-hidden="true">
+              <span class="trust-badge">Client Perspective</span>
+              <p>
+                “What stands out is the emphasis on capital protection and clarity. Every discussion starts with risk before opportunity.”
+              </p>
+              <strong>Options Participant</strong>
+            </article>
+
+            <article class="trust-proof-card" data-slide="2" aria-hidden="true">
+              <span class="trust-badge">Client Perspective</span>
+              <p>
+                “The approach feels professional and data-backed. It helps filter impulsive decisions and keeps the process consistent.”
+              </p>
+              <strong>Independent Market Learner</strong>
+            </article>
+          </div>
+
+          <div class="testimonial-controls" aria-label="Testimonial controls">
+            <button type="button" class="testimonial-btn" id="testimonialPrev" aria-label="Previous testimonial">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+
+            <div class="testimonial-dots" id="testimonialDots" role="tablist" aria-label="Choose testimonial">
+              <button type="button" class="testimonial-dot is-active" data-slide-to="0" role="tab" aria-selected="true" aria-label="Show testimonial 1"></button>
+              <button type="button" class="testimonial-dot" data-slide-to="1" role="tab" aria-selected="false" aria-label="Show testimonial 2"></button>
+              <button type="button" class="testimonial-dot" data-slide-to="2" role="tab" aria-selected="false" aria-label="Show testimonial 3"></button>
+            </div>
+
+            <button type="button" class="testimonial-btn" id="testimonialNext" aria-label="Next testimonial">
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="trust-grid trust-grid-static">
+          <article class="trust-proof-card reveal trust-proof-static">
+            <span class="trust-badge">Client Perspective</span>
+            <p>
+              “The guidance is practical and calm. The focus stays on setups, risk, and execution discipline rather than noise.”
+            </p>
+            <strong>Active Index Trader</strong>
+          </article>
+
+          <article class="trust-proof-card reveal trust-proof-static">
+            <span class="trust-badge">Client Perspective</span>
+            <p>
+              “What stands out is the emphasis on capital protection and clarity. Every discussion starts with risk before opportunity.”
+            </p>
+            <strong>Options Participant</strong>
+          </article>
+
+          <article class="trust-proof-card reveal trust-proof-static">
+            <span class="trust-badge">Client Perspective</span>
+            <p>
+              “The approach feels professional and data-backed. It helps filter impulsive decisions and keeps the process consistent.”
+            </p>
+            <strong>Independent Market Learner</strong>
+          </article>
+        </div>
+
+        <div class="trust-points reveal">
+          <span><i class="bi bi-patch-check"></i> Research-led market analysis</span>
+          <span><i class="bi bi-shield-check"></i> Risk-first trading framework</span>
+          <span><i class="bi bi-bar-chart-line"></i> Long-term consistency over hype</span>
+        </div>
+
+        <p class="trust-disclaimer reveal">
+          Trading involves market risk. The focus here is on disciplined decision-making, responsible execution, and informed market participation rather than unrealistic claims.
+        </p>
+      </div>
+    </section>
+<section class="section" id="process">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">How We Work</p>
+          <h2>A clear 5-step process built for disciplined trading decisions.</h2>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-card reveal">
+            <span class="process-step">Step 1</span>
+            <h3>Risk Profiling</h3>
+            <p>We map your capital, experience level, and drawdown tolerance before discussing any setup.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 2</span>
+            <h3>Market Structure Analysis</h3>
+            <p>Trend, volatility, and key levels are aligned to define a valid market context.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 3</span>
+            <h3>Strategy Mapping</h3>
+            <p>We match the setup style to your profile: breakout, hedge, options structure, or range-play.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 4</span>
+            <h3>Execution Plan</h3>
+            <p>Every trade has defined entry, invalidation, size, and risk-to-reward before execution.</p>
+          </article>
+          <article class="process-card reveal">
+            <span class="process-step">Step 5</span>
+            <h3>Review and Improve</h3>
+            <p>Post-trade journaling and periodic review keep behavior consistent over the long run.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+<section class="section" id="consultation">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Client-fit Consultation</p>
+          <h2>Choose your trading profile and get a tailored action plan preview.</h2>
+        </div>
+
+        <div class="consultation-shell reveal">
+          <div class="profile-selector" id="profileSelector" role="tablist" aria-label="Choose trading profile">
+            <button type="button" class="profile-option is-active" data-profile="beginner" role="tab" aria-selected="true">Beginner</button>
+            <button type="button" class="profile-option" data-profile="active" role="tab" aria-selected="false">Active Trader</button>
+            <button type="button" class="profile-option" data-profile="options" role="tab" aria-selected="false">Options Seller</button>
+          </div>
+
+          <article class="consultation-plan" id="consultationPlanOutput" aria-live="polite">
+            <h3>Beginner Plan</h3>
+            <p>Primary focus: capital protection, clean risk habits, and process-first execution.</p>
+            <ul>
+              <li>Recommended style: limited-frequency index setups</li>
+              <li>Risk model: 0.5% to 1.0% per trade</li>
+              <li>First 7-day plan: checklist discipline + stop-loss consistency</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+<section class="section" id="case-studies">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Client Case Studies</p>
+          <h2>Real transformation examples focused on behavior and risk control.</h2>
+        </div>
+
+        <div class="case-grid">
+          <article class="case-card reveal">
+            <span class="case-chip">Case A</span>
+            <h3>Overtrading to Structured Execution</h3>
+            <p><strong>Problem:</strong> Frequent impulsive entries and inconsistent stop placement.</p>
+            <p><strong>Intervention:</strong> Pre-trade checklist, max trades/day cap, and strict SL framework.</p>
+            <p><strong>Outcome:</strong> Plan adherence improved from 42% to 78% in 6 weeks.</p>
+          </article>
+          <article class="case-card reveal">
+            <span class="case-chip">Case B</span>
+            <h3>Portfolio Noise to Risk-Aligned Allocation</h3>
+            <p><strong>Problem:</strong> Random position sizing across unrelated setups.</p>
+            <p><strong>Intervention:</strong> Uniform risk-per-trade model and scenario-based hedge plan.</p>
+            <p><strong>Outcome:</strong> Drawdown volatility reduced while decision quality improved.</p>
+          </article>
+          <article class="case-card reveal">
+            <span class="case-chip">Case C</span>
+            <h3>Option Selling Without Structure to Managed Premium Approach</h3>
+            <p><strong>Problem:</strong> Naked exposure during event-driven sessions.</p>
+            <p><strong>Intervention:</strong> Defined risk spreads with event-window position control.</p>
+            <p><strong>Outcome:</strong> Better consistency in risk behavior across volatile weeks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="mobile-action-bar" aria-label="Quick mobile actions">
+    <a href="tel:+919473828691"><i class="bi bi-telephone"></i><span>Call</span></a>
+    <a href="https://wa.me/919473828691?text=I%20want%20to%20discuss%20my%20trading%20requirements." target="_blank" rel="noreferrer noopener"><i class="bi bi-whatsapp"></i><span>WhatsApp</span></a>
+    <a href="calculator.html"><i class="bi bi-calculator"></i><span>Plan</span></a>
+    <a href="contact.html"><i class="bi bi-chat-dots"></i><span>Inquiry</span></a>
+  </div>
+
+  <a
+    class="whatsapp-float"
+    href="https://wa.me/919473828691?text=Welcome%20and%20thank%20you%20for%20connecting.%0AWe%20believe%20in%20professional%2C%20reliable%2C%20and%20trustworthy%20trading%20guidance.%0AFeel%20free%20to%20share%20your%20queries%20or%20trading%20goals."
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="Chat on WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>
+        <strong>Thebeingseller</strong>
+        <p>Professional trading guidance for informed and disciplined market participation.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/ashutosh-srivastava-3789653b6/" target="_blank" rel="noreferrer noopener"><i class="bi bi-linkedin"></i><span>LinkedIn</span></a>
+        <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener"><i class="bi bi-instagram"></i><span>Instagram</span></a>
+        <a href="https://youtube.com/@thebeingseller?si=L2bntPNEycOxH1vg" target="_blank" rel="noreferrer noopener"><i class="bi bi-youtube"></i><span>YouTube</span></a>
+        <a href="https://x.com" target="_blank" rel="noreferrer noopener"><i class="bi bi-twitter-x"></i><span>X</span></a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year"></span> Thebeingseller. All rights reserved.</p>
+    </div>
+    <div class="footer-credit">
+      <p class="footer-credit-left">&copy; <span id="year"></span> Developed by <a href="https://github.com/Utkarsh2118" target="_blank" rel="noreferrer noopener" aria-label="Visit Utkarsh Srivastava's GitHub profile">Utkarsh Srivastava</a></p>
+      <div class="footer-credit-right">
+        <button class="footer-feedback-trigger" id="openFeedbackBtn" type="button">
+          <i class="bi bi-chat-dots"></i>
+          Share We
+        </button>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

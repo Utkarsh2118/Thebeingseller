@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Professional trading business website for market analysis, portfolio consultation, and trading setup guidance."
+  />
+  <meta name="keywords" content="Nifty trader, BankNifty trading, options seller, market analysis, trading consultation, risk management" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Thebeingseller | Professional Trading Solutions" />
+  <meta property="og:description" content="Professional trading guidance focused on disciplined execution, research-based analysis, and risk-managed market participation." />
+  <meta property="og:type" content="website" />
+  <title>Market Desk | Thebeingseller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  />
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Vercel Web Analytics -->
+  <script defer src="https://cdn.vercel-analytics.com/v1/script.js"></script>
+  
+  <!-- Vercel Speed Insights -->
+  <script defer src="https://cdn.vercel-analytics.com/v1/speed-insights.js"></script>
+</head>
+<body>
+<div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-shell">
+      <span class="loader-mark">TS</span>
+      <p>Preparing live trading desk...</p>
+      <div class="loader-bar" aria-hidden="true">
+        <span id="loaderBar"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-progress" aria-hidden="true">
+    <span id="scrollProgressBar"></span>
+  </div>
+
+  <div id="marketStatusBadge" aria-live="polite" aria-label="Market status indicator">
+    🔒 Market Closed
+  </div>
+
+  <aside class="temp-feedback-widget" id="tempFeedbackWidget" aria-live="polite" aria-label="Temporary website feedback form">
+    <button class="temp-feedback-close" id="tempFeedbackClose" type="button" aria-label="Close feedback form">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <div class="temp-feedback-head">
+      <span class="temp-feedback-mark" aria-hidden="true"><i class="bi bi-chat-square-heart"></i></span>
+      <div>
+        <p class="temp-feedback-tag">Limited-time feedback</p>
+        <h3>Help us improve this website</h3>
+      </div>
+      <span class="temp-feedback-chip">2 min form</span>
+    </div>
+
+    <p class="temp-feedback-copy">Your quick feedback helps us fine-tune the trading desk experience, readability, and mobile usability.</p>
+
+    <form id="tempFeedbackForm" novalidate>
+      <div class="temp-feedback-grid">
+        <label class="temp-feedback-field" for="tempFeedbackName">
+          <span>Name</span>
+          <input id="tempFeedbackName" name="tempFeedbackName" type="text" placeholder="Your name" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackEmail">
+          <span>Email</span>
+          <input id="tempFeedbackEmail" name="tempFeedbackEmail" type="email" placeholder="you@example.com" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackPhone">
+          <span>Phone</span>
+          <input id="tempFeedbackPhone" name="tempFeedbackPhone" type="tel" placeholder="+91 12345 67890" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackRating">
+          <span>Experience</span>
+          <select id="tempFeedbackRating" name="tempFeedbackRating">
+            <option value="">Select</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Average">Average</option>
+            <option value="Needs Improvement">Needs Improvement</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="temp-feedback-field" for="tempFeedbackMessage">
+        <span>Feedback</span>
+        <textarea id="tempFeedbackMessage" name="tempFeedbackMessage" rows="3" placeholder="What should we improve on this website?"></textarea>
+      </label>
+
+      <div class="temp-feedback-actions">
+        <button class="btn btn-primary temp-feedback-submit" id="tempFeedbackSubmit" type="submit">Submit Feedback</button>
+        <button class="temp-feedback-later" id="tempFeedbackLater" type="button">Maybe later</button>
+      </div>
+
+      <p class="temp-feedback-footnote">This temporary form will auto-hide after the campaign window ends.</p>
+
+      <p class="temp-feedback-status" id="tempFeedbackStatus" role="status" aria-live="polite"></p>
+    </form>
+  </aside>
+
+  <div class="page-aura page-aura-left" aria-hidden="true"></div>
+  <div class="page-aura page-aura-right" aria-hidden="true"></div>
+
+  <header class="site-header" id="home">
+    <nav class="navbar container">
+      <a class="brand" href="index.html" aria-label="Professional Trading Solutions home">
+        <span class="brand-mark">TS</span>
+        <span class="brand-text">
+          <strong>Thebeingseller</strong>
+          <small>Professional, Reliable, and Trustworthy</small>
+        </span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="services.html#strategies">Strategies</a>
+        <a href="market.html">Market</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to Premium Light theme" title="Current: Minimal Pro">
+          <i class="bi bi-moon-stars"></i>
+          <span>Minimal Pro</span>
+        </button>
+       <a href="contact.html" class="btn btn-primary">Contact Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+<section class="section" id="market">
+      <div class="container market-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Market Desk</p>
+          <h2>Track the market backdrop before making your next decision.</h2>
+        </div>
+
+        <div class="session-mode-strip reveal" id="sessionModeStrip" aria-live="polite">
+          <span class="session-mode-chip" id="marketModeChip">Session Mode: Pre-open</span>
+          <p id="marketModeFocus">Focus: opening levels, event risk, and directional confirmation checklist.</p>
+        </div>
+
+        <div class="market-grid">
+          <article class="market-card chart-card reveal">
+            <div class="card-header">
+              <div>
+                <span class="panel-label">Advanced Chart</span>
+                <h3>BankNifty live chart</h3>
+              </div>
+              <span class="dot-indicator">Live</span>
+            </div>
+            <div id="tradingview-chart" class="chart-container"></div>
+          </article>
+
+          <div class="market-side">
+            <article class="market-card reveal">
+              <div class="card-header">
+                <div>
+                  <span class="panel-label">Key Focus</span>
+                  <h3>Live ticker watchlist</h3>
+                </div>
+              </div>
+              <div class="ticker-list">
+                <div>
+                  <span>Nifty</span>
+                  <strong>Trend and breadth tracking</strong>
+                </div>
+                <div>
+                  <span>Sensex</span>
+                  <strong>Large-cap sentiment pulse</strong>
+                </div>
+                <div>
+                  <span>BankNifty</span>
+                  <strong>Sector leadership signal</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="market-card news-card reveal">
+              <div class="card-header">
+                <div>
+                  <span class="panel-label">Market News</span>
+                  <h3>Financial headlines</h3>
+                </div>
+              </div>
+              <div class="news-feature" id="newsFeature">
+                <span class="news-tag" id="newsFeatureTag">Headline</span>
+                <h4 id="newsFeatureTitle">Loading market highlights...</h4>
+                <p id="newsFeatureSummary">Curated finance headlines rotate here for quick context.</p>
+              </div>
+              <div class="news-list" id="newsList"></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+<section class="section" id="mood-thermometer">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Market Mood Thermometer</p>
+          <h2>A live confidence meter that defines when to trade big, trade light, or protect capital.</h2>
+        </div>
+
+        <article class="mood-thermo-card reveal" aria-live="polite">
+          <div class="mood-thermo-layout">
+            <div class="mood-gauge-wrap">
+              <div class="mood-gauge" id="marketMoodGauge" role="img" aria-label="Market confidence score 64 out of 100">
+                <div class="mood-gauge-core">
+                  <strong id="marketMoodValue">64</strong>
+                  <span>/ 100</span>
+                </div>
+              </div>
+              <span class="mood-zone mood-zone-caution" id="marketMoodZone">Caution Zone</span>
+            </div>
+
+            <div class="mood-thermo-copy">
+              <span class="panel-label">Execution Framework</span>
+              <h3 id="marketMoodTitle">Balanced Confidence</h3>
+              <p id="marketMoodGuidance">Momentum is tradable but selective. Wait for clean confirmations and avoid forcing setups.</p>
+
+              <div class="mood-meta">
+                <p><strong>Suggested stance:</strong> <span id="marketMoodStance">Selective long setups</span></p>
+                <p><strong>Risk note:</strong> <span id="marketMoodRisk">Keep per-trade risk capped near 1%.</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mood-scale" aria-hidden="true">
+            <div class="mood-scale-track">
+              <span class="mood-scale-marker" id="marketMoodMarker"></span>
+            </div>
+            <div class="mood-scale-legend">
+              <span>0</span>
+              <span>40</span>
+              <span>70</span>
+              <span>100</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+<section class="section" id="sentiment">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Market Sentiment</p>
+          <h2>Current market bias across key Indian indices.</h2>
+        </div>
+
+        <div class="sentiment-grid">
+
+          <article class="sentiment-card is-bull reveal">
+            <div class="sentiment-card-top">
+              <span class="panel-label">Nifty 50</span>
+              <span class="sentiment-pill sentiment-pill-bull">
+                <i class="bi bi-graph-up-arrow"></i> Bullish
+              </span>
+            </div>
+            <div class="sentiment-body">
+              <div class="sentiment-body-icon sentiment-body-icon-bull" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <circle cx="32" cy="35" r="17"></circle>
+                  <polygon points="20,26 10,14 22,16"></polygon>
+                  <polygon points="44,26 54,14 42,16"></polygon>
+                  <circle cx="26" cy="35" r="2.5" class="senti-eye"></circle>
+                  <circle cx="38" cy="35" r="2.5" class="senti-eye"></circle>
+                </svg>
+              </div>
+              <div>
+                <strong class="sentiment-mood-label">Bullish</strong>
+                <span class="sentiment-trend-note">Trend above key support</span>
+              </div>
+            </div>
+            <div class="sentiment-scale">
+              <div class="sentiment-scale-track">
+                <div class="sentiment-scale-fill sentiment-scale-fill-bull" data-anim-width="72"></div>
+              </div>
+              <div class="sentiment-scale-ends">
+                <span>Bearish</span>
+                <span>Neutral</span>
+                <span>Bullish</span>
+              </div>
+            </div>
+            <p class="sentiment-card-desc">Nifty is maintaining its position above key moving averages with broad market participation and institutional support.</p>
+          </article>
+
+          <article class="sentiment-card is-neutral reveal">
+            <div class="sentiment-card-top">
+              <span class="panel-label">BankNifty</span>
+              <span class="sentiment-pill sentiment-pill-neutral">
+                <i class="bi bi-dash-circle"></i> Neutral
+              </span>
+            </div>
+            <div class="sentiment-body">
+              <div class="sentiment-body-icon sentiment-body-icon-neutral" aria-hidden="true">
+                <i class="bi bi-dash-circle sentiment-neutral-icon"></i>
+              </div>
+              <div>
+                <strong class="sentiment-mood-label">Neutral</strong>
+                <span class="sentiment-trend-note">Consolidating near resistance</span>
+              </div>
+            </div>
+            <div class="sentiment-scale">
+              <div class="sentiment-scale-track">
+                <div class="sentiment-scale-fill sentiment-scale-fill-neutral" data-anim-width="50"></div>
+              </div>
+              <div class="sentiment-scale-ends">
+                <span>Bearish</span>
+                <span>Neutral</span>
+                <span>Bullish</span>
+              </div>
+            </div>
+            <p class="sentiment-card-desc">BankNifty is in a consolidation phase near overhead resistance. Watching for a decisive breakout or breakdown for directional clarity.</p>
+          </article>
+
+          <article class="sentiment-card is-bull reveal">
+            <div class="sentiment-card-top">
+              <span class="panel-label">Overall Market</span>
+              <span class="sentiment-pill sentiment-pill-bull">
+                <i class="bi bi-graph-up-arrow"></i> Bullish
+              </span>
+            </div>
+            <div class="sentiment-body">
+              <div class="sentiment-body-icon sentiment-body-icon-bull" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <circle cx="32" cy="35" r="17"></circle>
+                  <polygon points="20,26 10,14 22,16"></polygon>
+                  <polygon points="44,26 54,14 42,16"></polygon>
+                  <circle cx="26" cy="35" r="2.5" class="senti-eye"></circle>
+                  <circle cx="38" cy="35" r="2.5" class="senti-eye"></circle>
+                </svg>
+              </div>
+              <div>
+                <strong class="sentiment-mood-label">Bullish</strong>
+                <span class="sentiment-trend-note">Broad breadth positive</span>
+              </div>
+            </div>
+            <div class="sentiment-scale">
+              <div class="sentiment-scale-track">
+                <div class="sentiment-scale-fill sentiment-scale-fill-bull" data-anim-width="65"></div>
+              </div>
+              <div class="sentiment-scale-ends">
+                <span>Bearish</span>
+                <span>Neutral</span>
+                <span>Bullish</span>
+              </div>
+            </div>
+            <p class="sentiment-card-desc">Broad market breadth remains positive with macro tailwinds supporting risk-on positioning across selective sector leaders.</p>
+          </article>
+
+        </div>
+        <p class="sentiment-disclaimer reveal">Sentiment indicators are for educational reference only. Market conditions change rapidly. Always apply your own risk management before entering any position.</p>
+      </div>
+    </section>
+<section class="section" id="calendar">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Economic Calendar</p>
+          <h2>Upcoming events that may drive market volatility.</h2>
+        </div>
+
+        <div class="calendar-wrapper reveal">
+          <div class="calendar-head">
+            <span>Date</span>
+            <span>Event</span>
+            <span>Category</span>
+            <span>Impact</span>
+          </div>
+          <div class="calendar-body" id="calendarBody"></div>
+        </div>
+
+        <div class="calendar-legend reveal">
+          <span class="impact-badge impact-high">High Impact</span>
+          <span class="impact-badge impact-medium">Medium Impact</span>
+          <span class="impact-badge impact-low">Low Impact</span>
+          <p>High-impact events often cause significant volatility. Adjust position sizing and stop-loss placement before these dates.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="mobile-action-bar" aria-label="Quick mobile actions">
+    <a href="tel:+919473828691"><i class="bi bi-telephone"></i><span>Call</span></a>
+    <a href="https://wa.me/919473828691?text=I%20want%20to%20discuss%20my%20trading%20requirements." target="_blank" rel="noreferrer noopener"><i class="bi bi-whatsapp"></i><span>WhatsApp</span></a>
+    <a href="calculator.html"><i class="bi bi-calculator"></i><span>Plan</span></a>
+    <a href="contact.html"><i class="bi bi-chat-dots"></i><span>Inquiry</span></a>
+  </div>
+
+  <a
+    class="whatsapp-float"
+    href="https://wa.me/919473828691?text=Welcome%20and%20thank%20you%20for%20connecting.%0AWe%20believe%20in%20professional%2C%20reliable%2C%20and%20trustworthy%20trading%20guidance.%0AFeel%20free%20to%20share%20your%20queries%20or%20trading%20goals."
+    target="_blank"
+    rel="noreferrer noopener"
+    aria-label="Chat on WhatsApp"
+  >
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>
+        <strong>Thebeingseller</strong>
+        <p>Professional trading guidance for informed and disciplined market participation.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/ashutosh-srivastava-3789653b6/" target="_blank" rel="noreferrer noopener"><i class="bi bi-linkedin"></i><span>LinkedIn</span></a>
+        <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener"><i class="bi bi-instagram"></i><span>Instagram</span></a>
+        <a href="https://youtube.com/@thebeingseller?si=L2bntPNEycOxH1vg" target="_blank" rel="noreferrer noopener"><i class="bi bi-youtube"></i><span>YouTube</span></a>
+        <a href="https://x.com" target="_blank" rel="noreferrer noopener"><i class="bi bi-twitter-x"></i><span>X</span></a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year"></span> Thebeingseller. All rights reserved.</p>
+    </div>
+    <div class="footer-credit">
+      <p class="footer-credit-left">&copy; <span id="year"></span> Developed by <a href="https://github.com/Utkarsh2118" target="_blank" rel="noreferrer noopener" aria-label="Visit Utkarsh Srivastava's GitHub profile">Utkarsh Srivastava</a></p>
+      <div class="footer-credit-right">
+        <button class="footer-feedback-trigger" id="openFeedbackBtn" type="button">
+          <i class="bi bi-chat-dots"></i>
+          Share We
+        </button>
+      </div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

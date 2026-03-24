@@ -39,6 +39,8 @@ const counters = document.querySelectorAll('.counter');
 const contactForm = document.getElementById('contactForm');
 const formFeedback = document.getElementById('formFeedback');
 const submitButton = document.querySelector('.submit-btn');
+const contactSuccessPanel = document.getElementById('contactSuccessPanel');
+const contactSuccessRef = document.getElementById('contactSuccessRef');
 const yearElement = document.getElementById('year');
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const newsFeatureTitle = document.getElementById('newsFeatureTitle');
@@ -63,6 +65,7 @@ const heroSignalConfidence = document.getElementById('heroSignalConfidence');
 const heroSignalVolatility = document.getElementById('heroSignalVolatility');
 const heroSignalWindow = document.getElementById('heroSignalWindow');
 const marketStatusBadge = document.getElementById('marketStatusBadge');
+const chartFallback = document.getElementById('chartFallback');
 
 const apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? (siteConfig.developmentApiBaseUrl || siteConfig.productionApiBaseUrl)
@@ -242,42 +245,67 @@ const revealObserver = new IntersectionObserver(
 
 revealElements.forEach((element) => revealObserver.observe(element));
 
-const counterObserver = new IntersectionObserver(
-  (entries, observer) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) {
+const initializeAchievementCounters = () => {
+  if (!counters.length) {
+    return;
+  }
+
+  const animateCounter = (element) => {
+    if (element.dataset.countupDone === '1') {
+      return;
+    }
+
+    const achievementCard = element.closest('.achievement-card');
+    const target = Number(element.dataset.target || 0);
+    const suffix = element.dataset.suffix || '';
+    const duration = 1600;
+    const start = performance.now();
+
+    element.dataset.countupDone = '1';
+
+    if (achievementCard) {
+      achievementCard.classList.add('is-active');
+    }
+
+    const tick = (timestamp) => {
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const value = Math.floor(progress * target);
+      element.textContent = `${value.toLocaleString()}${suffix}`;
+
+      if (progress < 1) {
+        window.requestAnimationFrame(tick);
         return;
       }
 
-      const element = entry.target;
-      const achievementCard = element.closest('.achievement-card');
-      const target = Number(element.dataset.target || 0);
-      const suffix = element.dataset.suffix || '';
-      const duration = 1600;
-      const start = performance.now();
+      element.textContent = `${target.toLocaleString()}${suffix}`;
+    };
 
-      if (achievementCard) {
-        achievementCard.classList.add('is-active');
-      }
+    window.requestAnimationFrame(tick);
+  };
 
-      const tick = (timestamp) => {
-        const progress = Math.min((timestamp - start) / duration, 1);
-        const value = Math.floor(progress * target);
-        element.textContent = `${value.toLocaleString()}${suffix}`;
-
-        if (progress < 1) {
-          window.requestAnimationFrame(tick);
+  const counterObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
         }
-      };
 
-      window.requestAnimationFrame(tick);
-      observer.unobserve(element);
-    });
-  },
-  { threshold: 0.45 }
-);
+        animateCounter(entry.target);
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.2, rootMargin: '0px 0px -12% 0px' }
+  );
 
-counters.forEach((counter) => counterObserver.observe(counter));
+  counters.forEach((counter) => counterObserver.observe(counter));
+
+  // Fallback: if IntersectionObserver timing misses, force animate after initial render.
+  window.setTimeout(() => {
+    counters.forEach((counter) => animateCounter(counter));
+  }, 2800);
+};
+
+initializeAchievementCounters();
 
 const sectionObserver = new IntersectionObserver(
   (entries) => {
@@ -306,6 +334,14 @@ sections.forEach((section) => sectionObserver.observe(section));
 
 const renderNews = () => {
   if (!newsList || !newsFeatureTitle || !newsFeatureSummary || !newsFeatureTag) {
+    return;
+  }
+
+  if (!newsItems.length) {
+    newsFeatureTag.textContent = 'Update';
+    newsFeatureTitle.textContent = 'Market news feed is syncing.';
+    newsFeatureSummary.textContent = 'Please check back shortly for refreshed headlines.';
+    newsList.innerHTML = '<p class="widget-fallback">Headlines will appear automatically after sync.</p>';
     return;
   }
 
@@ -405,7 +441,7 @@ const initializeTestimonialSlider = () => {
 
     intervalId = window.setInterval(() => {
       renderSlide(activeIndex + 1);
-    }, 4800);
+    }, 9000);
   };
 
   testimonialPrev?.addEventListener('click', () => {
@@ -1287,6 +1323,14 @@ let hasLoadedChart = false;
 let hasLoadedTickerTape = false;
 let activeTradingViewChartScript = null;
 
+const setChartFallback = (message) => {
+  if (!chartFallback) {
+    return;
+  }
+
+  chartFallback.textContent = message;
+};
+
 const loadTickerTape = () => {
   const tickerContainer = document.getElementById('marketTickerTape');
   if (!tickerContainer || !tickerContainer.parentElement) {
@@ -1359,6 +1403,27 @@ const loadTradingViewChart = () => {
     withdateranges: true,
     support_host: 'https://www.tradingview.com',
   });
+
+  let fallbackTimeout = null;
+  loader.addEventListener('load', () => {
+    if (fallbackTimeout) {
+      window.clearTimeout(fallbackTimeout);
+    }
+
+    setChartFallback('');
+  });
+
+  loader.addEventListener('error', () => {
+    if (fallbackTimeout) {
+      window.clearTimeout(fallbackTimeout);
+    }
+
+    setChartFallback('Live chart is temporarily unavailable. Please refresh or check your network.');
+  });
+
+  fallbackTimeout = window.setTimeout(() => {
+    setChartFallback('Chart feed is taking longer than expected. Data provider may be slow right now.');
+  }, 9000);
 
   container.appendChild(loader);
   chartContainer.appendChild(container);
@@ -1491,6 +1556,9 @@ if (contactForm) {
     try {
       isContactSubmitting = true;
       setFeedback('', 'success');
+      if (contactSuccessPanel) {
+        contactSuccessPanel.hidden = true;
+      }
 
       if (activeSubmitButton) {
         activeSubmitButton.disabled = true;
@@ -1528,12 +1596,28 @@ if (contactForm) {
       }
 
       setFeedback('Inquiry sent successfully. The trader will contact you soon.', 'success');
+      if (contactSuccessPanel) {
+        const confirmationTime = new Date().toLocaleString('en-IN', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+          timeZone: 'Asia/Kolkata',
+        });
+
+        contactSuccessPanel.hidden = false;
+        if (contactSuccessRef) {
+          contactSuccessRef.textContent = `Submitted on ${confirmationTime} IST. For faster coordination, continue on WhatsApp.`;
+        }
+      }
       contactForm.reset();
       if (messageInput) {
         messageInput.dispatchEvent(new Event('input', { bubbles: true }));
       }
       ['name', 'email', 'phone', 'message'].forEach((fieldName) => setFieldErrorState(fieldName, false));
     } catch (error) {
+      if (contactSuccessPanel) {
+        contactSuccessPanel.hidden = true;
+      }
+
       if (error.name === 'AbortError') {
         setFeedback('Server response is taking too long. Please try again in a few seconds.', 'error');
       } else {
@@ -1594,12 +1678,13 @@ const initializeTemporaryFeedbackForm = () => {
   let hasOpened = false;
   let hasVisitedPageEnd = false;
   let hasMinimumEngagement = false;
+  let hasMeaningfulInteraction = false;
 
   const phonePattern = /^[+]?[(]?[0-9\s-]{8,20}$/;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const openWidgetIfEligible = () => {
-    if (hasOpened || !hasVisitedPageEnd || !hasMinimumEngagement) {
+    if (hasOpened || !hasVisitedPageEnd || !hasMinimumEngagement || !hasMeaningfulInteraction) {
       return;
     }
 
@@ -1643,6 +1728,16 @@ const initializeTemporaryFeedbackForm = () => {
       openWidgetIfEligible();
     }, MIN_FEEDBACK_ENGAGEMENT_MS);
 
+    const markInteraction = () => {
+      hasMeaningfulInteraction = true;
+      openWidgetIfEligible();
+      window.removeEventListener('click', markInteraction);
+      window.removeEventListener('keydown', markInteraction);
+    };
+
+    window.addEventListener('click', markInteraction, { passive: true });
+    window.addEventListener('keydown', markInteraction);
+
     const footer = document.querySelector('.site-footer');
 
     if (footer && 'IntersectionObserver' in window) {
@@ -1668,6 +1763,10 @@ const initializeTemporaryFeedbackForm = () => {
     const scrollFallback = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      if (scrollTop > 140) {
+        hasMeaningfulInteraction = true;
+      }
 
       if (pageHeight <= 0) {
         return;
@@ -1833,7 +1932,7 @@ const economicCalendarEvents = [
     date: 'Apr 12',
     day: 'Saturday',
     event: 'India Inflation Data (CPI)',
-    description: 'Consumer Price Index � key indicator for RBI rate path expectations.',
+    description: 'Consumer Price Index - key indicator for RBI rate path expectations.',
     category: 'Macro Data',
     impact: 'high',
   },
@@ -1849,7 +1948,7 @@ const economicCalendarEvents = [
     date: 'Apr 22',
     day: 'Tuesday',
     event: 'Q4 Corporate Earnings Season',
-    description: 'Major index-heavy stocks begin reporting quarterly results � index mover.',
+    description: 'Major index-heavy stocks begin reporting quarterly results - index mover.',
     category: 'Earnings',
     impact: 'high',
   },
@@ -1857,7 +1956,7 @@ const economicCalendarEvents = [
     date: 'Apr 29',
     day: 'Tuesday',
     event: 'US Federal Reserve Meeting',
-    description: 'Fed rate decision and forward guidance � global risk sentiment impact.',
+    description: 'Fed rate decision and forward guidance - global risk sentiment impact.',
     category: 'Global',
     impact: 'high',
   },
@@ -1890,6 +1989,11 @@ const economicCalendarEvents = [
 const renderEconomicCalendar = () => {
   const calendarBody = document.getElementById('calendarBody');
   if (!calendarBody) {
+    return;
+  }
+
+  if (!economicCalendarEvents.length) {
+    calendarBody.innerHTML = '<div class="calendar-empty-state">No major events scheduled right now. Please check again later.</div>';
     return;
   }
 

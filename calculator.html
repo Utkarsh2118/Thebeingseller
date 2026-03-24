@@ -12,7 +12,7 @@
   <meta property="og:title" content="Thebeingseller | Professional Trading Solutions" />
   <meta property="og:description" content="Professional trading guidance focused on disciplined execution, research-based analysis, and risk-managed market participation." />
   <meta property="og:type" content="website" />
-  <title>Professional Trading Solutions</title>
+  <title>Risk Toolkit | Thebeingseller</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   
@@ -144,165 +144,164 @@
   </header>
 
   <main>
-
-    <section class="hero section">
-      <div class="hero-market-bg" aria-hidden="true">
-        <span class="hero-grid-line line-1"></span>
-        <span class="hero-grid-line line-2"></span>
-        <span class="hero-grid-line line-3"></span>
-        <span class="hero-price-path"></span>
-        <span class="hero-price-node node-1"></span>
-        <span class="hero-price-node node-2"></span>
-        <span class="hero-price-node node-3"></span>
-      </div>
-
-      <div class="container">
-        <div class="market-session-strip reveal" id="marketSessionStrip" aria-live="polite">
-          <div class="session-main">
-            <span class="session-dot" id="sessionDot" aria-hidden="true"></span>
-            <strong id="sessionLabel">Checking market session...</strong>
-          </div>
-          <div class="session-meta">
-            <span id="sessionNote">Aligning with India market timings</span>
-            <span id="sessionClock">IST --:--</span>
-          </div>
-          <p class="session-persona" id="sessionPersona">Desk Tone: Structured prep mode</p>
-        </div>
-      </div>
-
-      <div class="container hero-layout">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">Index and Derivatives Specialist</p>
-          <h1>Professional  Reliable  Trustworthy</h1>
-          <p class="hero-subtitle">
-           Helping traders navigate Nifty and BankNifty with structured strategies and disciplined risk management.
-          </p>
-          <p class="hero-session-persona" id="heroSessionPersona">Session Personality: Plan first, act with confirmation.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="contact.html">Contact Now</a>
-            <a class="btn btn-secondary" href="services.html">Explore Services</a>
-          </div>
-          <div class="hero-trust">
-            <span><i class="bi bi-bar-chart-line"></i> Live market perspective</span>
-            <span><i class="bi bi-shield-check"></i> Risk-first planning</span>
-            <span><i class="bi bi-people"></i> Client-focused guidance</span>
-          </div>
-
-          <div class="hero-signal-strip reveal" aria-label="Live desk signals">
-            <article>
-              <span>Desk Confidence</span>
-              <strong id="heroSignalConfidence">78%</strong>
-            </article>
-            <article>
-              <span>Volatility Tone</span>
-              <strong id="heroSignalVolatility">Moderate</strong>
-            </article>
-            <article>
-              <span>Execution Window</span>
-              <strong id="heroSignalWindow">Intraday Focus</strong>
-            </article>
-          </div>
+<section class="section rr-section" id="calculator">
+      <div class="container rr-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Risk Toolkit</p>
+          <h2>Plan risk and position size before every trade.</h2>
+          <p>Use this calculator to keep exposure controlled and decision-making process-driven.</p>
         </div>
 
-        <aside class="hero-panel reveal" aria-label="Trading performance overview">
-          <div class="panel-top">
-            <div>
-              <p class="panel-label">Market Snapshot</p>
-              <h2>Focused on high-probability setups</h2>
-            </div>
-            <span class="status-chip">Live</span>
-          </div>
-
-          <div class="mini-metrics">
-            <article>
-              <span>Nifty Bias</span>
-              <strong>Bullish</strong>
-              <small>Trend above key support</small>
-            </article>
-            <article>
-              <span>BankNifty</span>
-              <strong>Momentum</strong>
-              <small>Leadership watchlist</small>
-            </article>
-            <article>
-              <span>Options</span>
-              <strong>Volatility Edge</strong>
-              <small>Structured hedge awareness</small>
-            </article>
-          </div>
-
-          <div class="bull-bear-visual" aria-label="Bull and Bear market sentiment animation">
-            <div class="bb-title-row">
-              <p class="panel-label">Sentiment Motion</p>
-              <span class="bb-chip" id="bbMoodChip">Bull vs Bear</span>
+        <div class="rr-grid">
+          <article class="rr-card reveal">
+            <div class="rr-card-head">
+              <span class="panel-label">Risk-Reward</span>
+              <h3>Setup Quality Check</h3>
             </div>
 
-            <div class="bb-stage" aria-hidden="true">
-              <div class="bb-candles">
-                <span class="candle-1"></span>
-                <span class="candle-2"></span>
-                <span class="candle-3"></span>
-                <span class="candle-4"></span>
-                <span class="candle-5"></span>
+            <div class="rr-input-grid">
+              <label class="rr-input-field" for="entryPrice">
+                <span>Entry Price</span>
+                <input id="entryPrice" type="number" min="0" step="0.01" placeholder="e.g. 24500" />
+              </label>
+              <label class="rr-input-field" for="stopPrice">
+                <span>Stop Loss</span>
+                <input id="stopPrice" type="number" min="0" step="0.01" placeholder="e.g. 24430" />
+              </label>
+              <label class="rr-input-field" for="targetPrice">
+                <span>Target</span>
+                <input id="targetPrice" type="number" min="0" step="0.01" placeholder="e.g. 24640" />
+              </label>
+            </div>
+
+            <button class="btn btn-primary rr-calc-btn" type="button" id="rrCalculateBtn">Calculate Ratio</button>
+
+            <div class="rr-output" id="rrOutput" aria-live="polite">
+              <p>Enter setup values to evaluate reward-to-risk.</p>
+            </div>
+          </article>
+
+          <article class="rr-card reveal">
+            <div class="rr-card-head">
+              <span class="panel-label">Position Sizing</span>
+              <h3>Capital Protection Model</h3>
+            </div>
+
+            <div class="rr-input-grid">
+              <label class="rr-input-field" for="capitalAmount">
+                <span>Total Capital (INR)</span>
+                <input id="capitalAmount" type="number" min="0" step="1" placeholder="e.g. 500000" />
+              </label>
+              <label class="rr-input-field" for="riskPercent">
+                <span>Risk % per Trade</span>
+                <input id="riskPercent" type="number" min="0.1" step="0.1" placeholder="e.g. 1" />
+              </label>
+              <label class="rr-input-field" for="slPoints">
+                <span>Stop Distance (points)</span>
+                <input id="slPoints" type="number" min="0.1" step="0.1" placeholder="e.g. 70" />
+              </label>
+            </div>
+
+            <button class="btn btn-primary rr-calc-btn" type="button" id="positionCalculateBtn">Calculate Quantity</button>
+
+            <div class="whatif-panel" aria-label="What if risk scenarios">
+              <span>What-if Scenarios</span>
+              <div class="whatif-actions">
+                <button class="whatif-btn" type="button" data-risk-profile="conservative">Conservative</button>
+                <button class="whatif-btn" type="button" data-risk-profile="balanced">Balanced</button>
+                <button class="whatif-btn" type="button" data-risk-profile="aggressive">Aggressive</button>
               </div>
-              <div class="bb-trend-arrow"></div>
+              <small id="whatIfSummary">Pick a profile to auto-fill risk % and stop-distance assumptions.</small>
+            </div>
 
-              <div class="bb-token bb-bull">
-                <svg viewBox="0 0 64 64" role="img" aria-label="Bull icon">
-                  <circle cx="32" cy="35" r="17"></circle>
-                  <polygon points="20,26 10,14 22,16"></polygon>
-                  <polygon points="44,26 54,14 42,16"></polygon>
-                  <circle cx="26" cy="35" r="2.5"></circle>
-                  <circle cx="38" cy="35" r="2.5"></circle>
-                </svg>
-                <small>Bullish</small>
+            <div class="rr-output" id="positionOutput" aria-live="polite">
+              <p>Set capital, risk, and stop distance to derive size.</p>
+            </div>
+          </article>
+
+          <article class="rr-card rr-card-simulator reveal">
+            <div class="rr-card-head">
+              <span class="panel-label">What-if Trade Simulator</span>
+              <h3>Premium Selling Scenario Engine</h3>
+            </div>
+
+            <div class="sim-input-grid">
+              <label class="rr-input-field" for="simOptionType">
+                <span>Option Type</span>
+                <select id="simOptionType">
+                  <option value="call">Short Call</option>
+                  <option value="put">Short Put</option>
+                </select>
+              </label>
+
+              <label class="rr-input-field" for="simStrikePrice">
+                <span>Strike Price</span>
+                <input id="simStrikePrice" type="number" min="0" step="0.01" placeholder="e.g. 49500" />
+              </label>
+
+              <label class="rr-input-field" for="simPremiumReceived">
+                <span>Premium Received</span>
+                <input id="simPremiumReceived" type="number" min="0" step="0.05" placeholder="e.g. 210" />
+              </label>
+
+              <label class="rr-input-field" for="simStopLossPremium">
+                <span>Stop-loss Premium</span>
+                <input id="simStopLossPremium" type="number" min="0" step="0.05" placeholder="e.g. 320" />
+              </label>
+
+              <label class="rr-input-field" for="simTargetPremium">
+                <span>Target Exit Premium</span>
+                <input id="simTargetPremium" type="number" min="0" step="0.05" placeholder="e.g. 110" />
+              </label>
+
+              <label class="rr-input-field" for="simLotSize">
+                <span>Lot Size</span>
+                <input id="simLotSize" type="number" min="1" step="1" placeholder="e.g. 75" />
+              </label>
+
+              <label class="rr-input-field" for="simCapital">
+                <span>Trading Capital (INR)</span>
+                <input id="simCapital" type="number" min="0" step="1" placeholder="e.g. 600000" />
+              </label>
+
+              <label class="rr-input-field" for="simRiskPercent">
+                <span>Risk % per Trade</span>
+                <input id="simRiskPercent" type="number" min="0.1" step="0.1" placeholder="e.g. 1" />
+              </label>
+            </div>
+
+            <button class="btn btn-primary rr-calc-btn" type="button" id="whatIfSimulateBtn">Run Simulation</button>
+
+            <div class="sim-presets" aria-label="Quick preset scenarios">
+              <span>Quick Presets</span>
+              <div class="sim-preset-actions">
+                <button class="sim-preset-btn" type="button" data-sim-preset="bnf-call">BankNifty Weekly CE Sell</button>
+                <button class="sim-preset-btn" type="button" data-sim-preset="bnf-put">BankNifty Weekly PE Sell</button>
+                <button class="sim-preset-btn" type="button" data-sim-preset="nifty-ic">Nifty Iron Condor Side</button>
               </div>
-
-              <div class="bb-token bb-bear">
-                <svg viewBox="0 0 64 64" role="img" aria-label="Bear icon">
-                  <circle cx="22" cy="20" r="7"></circle>
-                  <circle cx="42" cy="20" r="7"></circle>
-                  <circle cx="32" cy="35" r="18"></circle>
-                  <circle cx="26" cy="35" r="2.5"></circle>
-                  <circle cx="38" cy="35" r="2.5"></circle>
-                </svg>
-                <small>Bearish</small>
-              </div>
+              <small id="simPresetSummary">Pick a preset to auto-fill realistic sample values and run the simulator.</small>
             </div>
 
-            <div class="bb-sentiment-ticker" aria-label="Live bullish and bearish sentiment snapshot">
-              <article class="bb-ticker-card bb-ticker-bull">
-                <span class="bb-ticker-label">Bullish Pressure</span>
-                <strong id="bbBullPressure">+1.82%</strong>
-              </article>
-              <article class="bb-ticker-card bb-ticker-bear">
-                <span class="bb-ticker-label">Bearish Pressure</span>
-                <strong id="bbBearPressure">-0.96%</strong>
-              </article>
+            <div class="rr-output sim-output" id="whatIfSimOutput" aria-live="polite">
+              <p>Enter strike, premium, stop, target, and lot details to simulate break-even, planned max loss, and suggested lots.</p>
             </div>
-          </div>
-
-          <div class="signal-card">
-            <div>
-              <p class="panel-label">Approach</p>
-              <h3>Read the tape. Respect risk. Execute with intent.</h3>
-            </div>
-            <ul>
-              <li>Technical structure and momentum alignment</li>
-              <li>Clear entry, exit, and invalidation planning</li>
-              <li>Consultation tailored to client objectives</li>
-            </ul>
-          </div>
-        </aside>
+          </article>
+        </div>
       </div>
     </section>
-
-    
-<section class="ticker-section reveal">
+<section class="section sample-report-section" id="sample-report">
       <div class="container">
-        <div class="tradingview-widget-container ticker-shell">
-          <div class="tradingview-widget-container__widget" id="marketTickerTape"></div>
-        </div>
+        <article class="sample-report-card reveal">
+          <div>
+            <p class="eyebrow">Client Deliverable Preview</p>
+            <h2>Download a sample weekly market plan.</h2>
+            <p>Show clients exactly how your structured analysis is delivered: bias, levels, risk zones, and invalidation plan.</p>
+          </div>
+          <div class="sample-report-actions">
+            <button type="button" class="btn btn-primary" id="downloadSampleReportBtn">Download Sample Report</button>
+            <p id="sampleReportStatus" aria-live="polite">Instant download. No signup required.</p>
+          </div>
+        </article>
       </div>
     </section>
   </main>
@@ -344,7 +343,7 @@
       <div class="footer-credit-right">
         <button class="footer-feedback-trigger" id="openFeedbackBtn" type="button">
           <i class="bi bi-chat-dots"></i>
-          Share Your Feedback
+          Share We
         </button>
       </div>
     </div>
