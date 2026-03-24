@@ -51,6 +51,64 @@
     🔒 Market Closed
   </div>
 
+  <aside class="temp-feedback-widget" id="tempFeedbackWidget" aria-live="polite" aria-label="Temporary website feedback form">
+    <button class="temp-feedback-close" id="tempFeedbackClose" type="button" aria-label="Close feedback form">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <div class="temp-feedback-head">
+      <span class="temp-feedback-mark" aria-hidden="true"><i class="bi bi-chat-square-heart"></i></span>
+      <div>
+        <p class="temp-feedback-tag">Limited-time feedback</p>
+        <h3>Help us improve this website</h3>
+      </div>
+      <span class="temp-feedback-chip">2 min form</span>
+    </div>
+
+    <p class="temp-feedback-copy">Your quick feedback helps us fine-tune the trading desk experience, readability, and mobile usability.</p>
+
+    <form id="tempFeedbackForm" novalidate>
+      <div class="temp-feedback-grid">
+        <label class="temp-feedback-field" for="tempFeedbackName">
+          <span>Name</span>
+          <input id="tempFeedbackName" name="tempFeedbackName" type="text" placeholder="Your name" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackEmail">
+          <span>Email</span>
+          <input id="tempFeedbackEmail" name="tempFeedbackEmail" type="email" placeholder="you@example.com" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackPhone">
+          <span>Phone</span>
+          <input id="tempFeedbackPhone" name="tempFeedbackPhone" type="tel" placeholder="+91 12345 67890" />
+        </label>
+        <label class="temp-feedback-field" for="tempFeedbackRating">
+          <span>Experience</span>
+          <select id="tempFeedbackRating" name="tempFeedbackRating">
+            <option value="">Select</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Average">Average</option>
+            <option value="Needs Improvement">Needs Improvement</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="temp-feedback-field" for="tempFeedbackMessage">
+        <span>Feedback</span>
+        <textarea id="tempFeedbackMessage" name="tempFeedbackMessage" rows="3" placeholder="What should we improve on this website?"></textarea>
+      </label>
+
+      <div class="temp-feedback-actions">
+        <button class="btn btn-primary temp-feedback-submit" id="tempFeedbackSubmit" type="submit">Submit Feedback</button>
+        <button class="temp-feedback-later" id="tempFeedbackLater" type="button">Maybe later</button>
+      </div>
+
+      <p class="temp-feedback-footnote">This temporary form will auto-hide after the campaign window ends.</p>
+
+      <p class="temp-feedback-status" id="tempFeedbackStatus" role="status" aria-live="polite"></p>
+    </form>
+  </aside>
+
   <div class="page-aura page-aura-left" aria-hidden="true"></div>
   <div class="page-aura page-aura-right" aria-hidden="true"></div>
 
@@ -107,6 +165,7 @@
             <span id="sessionNote">Aligning with India market timings</span>
             <span id="sessionClock">IST --:--</span>
           </div>
+          <p class="session-persona" id="sessionPersona">Desk Tone: Structured prep mode</p>
         </div>
       </div>
 
@@ -117,6 +176,7 @@
           <p class="hero-subtitle">
            Helping traders navigate Nifty and BankNifty with structured strategies and disciplined risk management.
           </p>
+          <p class="hero-session-persona" id="heroSessionPersona">Session Personality: Plan first, act with confirmation.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#contact">Contact Now</a>
             <a class="btn btn-secondary" href="#services">Explore Services</a>
@@ -1224,6 +1284,74 @@
               <p>Set capital, risk, and stop distance to derive size.</p>
             </div>
           </article>
+
+          <article class="rr-card rr-card-simulator reveal">
+            <div class="rr-card-head">
+              <span class="panel-label">What-if Trade Simulator</span>
+              <h3>Premium Selling Scenario Engine</h3>
+            </div>
+
+            <div class="sim-input-grid">
+              <label class="rr-input-field" for="simOptionType">
+                <span>Option Type</span>
+                <select id="simOptionType">
+                  <option value="call">Short Call</option>
+                  <option value="put">Short Put</option>
+                </select>
+              </label>
+
+              <label class="rr-input-field" for="simStrikePrice">
+                <span>Strike Price</span>
+                <input id="simStrikePrice" type="number" min="0" step="0.01" placeholder="e.g. 49500" />
+              </label>
+
+              <label class="rr-input-field" for="simPremiumReceived">
+                <span>Premium Received</span>
+                <input id="simPremiumReceived" type="number" min="0" step="0.05" placeholder="e.g. 210" />
+              </label>
+
+              <label class="rr-input-field" for="simStopLossPremium">
+                <span>Stop-loss Premium</span>
+                <input id="simStopLossPremium" type="number" min="0" step="0.05" placeholder="e.g. 320" />
+              </label>
+
+              <label class="rr-input-field" for="simTargetPremium">
+                <span>Target Exit Premium</span>
+                <input id="simTargetPremium" type="number" min="0" step="0.05" placeholder="e.g. 110" />
+              </label>
+
+              <label class="rr-input-field" for="simLotSize">
+                <span>Lot Size</span>
+                <input id="simLotSize" type="number" min="1" step="1" placeholder="e.g. 75" />
+              </label>
+
+              <label class="rr-input-field" for="simCapital">
+                <span>Trading Capital (INR)</span>
+                <input id="simCapital" type="number" min="0" step="1" placeholder="e.g. 600000" />
+              </label>
+
+              <label class="rr-input-field" for="simRiskPercent">
+                <span>Risk % per Trade</span>
+                <input id="simRiskPercent" type="number" min="0.1" step="0.1" placeholder="e.g. 1" />
+              </label>
+            </div>
+
+            <button class="btn btn-primary rr-calc-btn" type="button" id="whatIfSimulateBtn">Run Simulation</button>
+
+            <div class="sim-presets" aria-label="Quick preset scenarios">
+              <span>Quick Presets</span>
+              <div class="sim-preset-actions">
+                <button class="sim-preset-btn" type="button" data-sim-preset="bnf-call">BankNifty Weekly CE Sell</button>
+                <button class="sim-preset-btn" type="button" data-sim-preset="bnf-put">BankNifty Weekly PE Sell</button>
+                <button class="sim-preset-btn" type="button" data-sim-preset="nifty-ic">Nifty Iron Condor Side</button>
+              </div>
+              <small id="simPresetSummary">Pick a preset to auto-fill realistic sample values and run the simulator.</small>
+            </div>
+
+            <div class="rr-output sim-output" id="whatIfSimOutput" aria-live="polite">
+              <p>Enter strike, premium, stop, target, and lot details to simulate break-even, planned max loss, and suggested lots.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1330,14 +1458,21 @@
         <p>Professional trading guidance for informed and disciplined market participation.</p>
       </div>
       <div class="footer-links">
-        <a href="https://www.linkedin.com/in/ashutosh-srivastava-3789653b6/" target="_blank" rel="noreferrer noopener">LinkedIn</a>
-        <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener">Instagram</a>
-        <a href="https://x.com" target="_blank" rel="noreferrer noopener">X</a>
+        <a href="https://www.linkedin.com/in/ashutosh-srivastava-3789653b6/" target="_blank" rel="noreferrer noopener"><i class="bi bi-linkedin"></i><span>LinkedIn</span></a>
+        <a href="https://www.instagram.com/the_being_seller/" target="_blank" rel="noreferrer noopener"><i class="bi bi-instagram"></i><span>Instagram</span></a>
+        <a href="https://youtube.com/@thebeingseller?si=L2bntPNEycOxH1vg" target="_blank" rel="noreferrer noopener"><i class="bi bi-youtube"></i><span>YouTube</span></a>
+        <a href="https://x.com" target="_blank" rel="noreferrer noopener"><i class="bi bi-twitter-x"></i><span>X</span></a>
       </div>
       <p class="footer-copy">&copy; <span id="year"></span> Thebeingseller. All rights reserved.</p>
     </div>
     <div class="footer-credit">
-      <p>Developed by <a href="https://github.com/Utkarsh2118" target="_blank" rel="noreferrer noopener" aria-label="Visit Utkarsh Srivastava's GitHub profile">Utkarsh Srivastava</a></p>
+      <p class="footer-credit-left">&copy; <span id="year"></span> Developed by <a href="https://github.com/Utkarsh2118" target="_blank" rel="noreferrer noopener" aria-label="Visit Utkarsh Srivastava's GitHub profile">Utkarsh Srivastava</a></p>
+      <div class="footer-credit-right">
+        <button class="footer-feedback-trigger" id="openFeedbackBtn" type="button">
+          <i class="bi bi-chat-dots"></i>
+          Share Website Feedback
+        </button>
+      </div>
     </div>
   </footer>
 
