@@ -484,10 +484,9 @@ const initializeHeroSignals = () => {
   }
 
   const snapshots = [
-    { confidence: '78%', volatility: 'Moderate', window: 'Intraday Focus' },
-    { confidence: '82%', volatility: 'Elevated', window: 'Breakout Watch' },
-    { confidence: '74%', volatility: 'Balanced', window: 'Range Trade' },
-    { confidence: '86%', volatility: 'Expanding', window: 'Momentum Push' },
+    { confidence: 'Nifty & BankNifty', volatility: 'Options & Derivatives', window: 'Risk-First' },
+    { confidence: 'Index Options', volatility: 'Price Action', window: 'Plan Before Entry' },
+    { confidence: 'Nifty & BankNifty', volatility: 'Structured Hedging', window: 'Defined Risk' },
   ];
 
   let activeSnapshot = 0;
